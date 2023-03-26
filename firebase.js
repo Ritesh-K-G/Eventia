@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { getFirestore, setDoc, doc, getDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getFirestore, collection, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -86,15 +86,38 @@ else if(ishomepage){
   onAuthStateChanged(auth, (user) => {
     //----------------- session implementation ------------------------//
     if (user) {
-      console.log(user.email);
       //----------------- ongoing events details printing ------------------------//
+      const eventdb = collection(db, 'events');
+      getDocs(eventdb)
+        .then((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            const main = document.querySelector("#events-ongoing");
+            const card = document.createElement('div');
+            card.classList = 'swiper-slide';
+            const eventCard = `
+              <div class="swiper-slide">
+                <div class="card">
+                  <img
+                    src="${doc.data().photoURL}"
+                    alt="Card Image">
+                  <button class="btn">Details</button>
+                  <div class="card-content">
+                    <h2>${doc.data().name}</h2>
+                    <p>${doc.data().description}</p>
+                    <a href="#">Read Less</a>
+                  </div>
+                </div>
+              </div>
+            `;
+            card.innerHTML += eventCard;
+            main.appendChild(card);
+          })
+        })
     } 
     else{
       location.replace("../index.html");
     }
   });
-
-  
 
   //----------------- user logout authentication ------------------------//
   document.getElementById("logoutbtn").onclick = function(){
@@ -127,7 +150,6 @@ else if(isprofile) {
           }
         })
         .catch((err) => {
-          // console.log("Error getting document: ",err);
           alert("select query error");
         });
     } 
