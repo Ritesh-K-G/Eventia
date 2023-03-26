@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { collection, getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
-
+import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
+import { getFirestore, setDoc, doc, getDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLdDI-Dt94krmMlKra6x95t3mduJaQBVI",
@@ -20,8 +20,8 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-
+const storage = getStorage(app);
+const firestore = getFirestore(app);
 
 //----------------- Different pages js functions ------------------------//
 if(isloginpage) {
@@ -141,4 +141,37 @@ else if(isprofile) {
     auth.signOut();
     navigate("../index.html");
   }
+
+
+  //----------------update image-----------------------------------------//
+  const fileInput= document.getElementById("upload-button");
+  fileInput.addEventListener("change",(event)=>{
+    const file = event.target.files[0];
+    const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
+    const userDocRef = doc(firestore, "users", auth.currentUser.uid);
+    uploadBytes(storageRef, file).then(() => {
+      // console.log("File uploaded successfully!");
+      getDownloadURL(storageRef).then((url) => {
+        // console.log("File download URL:", url);
+        updateDoc(userDocRef, {
+          image: url
+        }).then(() => {
+          // console.log("User profile image updated successfully!");
+          location.reload();
+        }).catch((error) => {
+          // console.error("Error updating user image:", error);
+          alert(error.message);
+        });
+      }).catch((error) => {
+        // console.error("Error getting file download URL:", error);
+        alert(error.message);
+      });
+    }).catch((error) => {
+      // console.error("Error uploading file:", error);
+      alert(error.message);
+    });
+  });
+  
+
+
 }
