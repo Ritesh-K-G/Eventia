@@ -32,7 +32,7 @@ if(isloginpage) {
     signInWithEmailAndPassword(auth,loginemail,password)
     .then((userCredential)=>{
       const user = userCredential.user;
-      location.replace("../homepage/");
+      location.replace("homepage/");
     })
     .catch((error)=>{
       const errorCode = error.code;
@@ -90,7 +90,7 @@ else if(ishomepage){
       document.getElementById("num").innerHTML= "hello "+ uid;
     } 
     else{
-      location.replace("./login-signup/index.html");
+      location.replace("../index.html");
     }
   });
   
@@ -130,13 +130,13 @@ else if(isprofile){
         });
     } 
     else{
-      location.replace("./login-signup/index.html");
+      location.replace("../index.html");
     }
   });
   
   //----------------- user logout authentication ------------------------//
-  function logoutProfile(){
+  document.getElementById("ProfileLogout").onclick = function() {
     auth.signOut();
-    navigate("/");
+    navigate("../index.html");
   }
 }

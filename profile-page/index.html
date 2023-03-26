@@ -14,20 +14,29 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="context-menu">
+      <input type="file" id="upload-button" accept="image/*" >
+      <label for="upload-button">
+        <i class="fas fa-upload"></i>
+        Update Image
+      </label>
+    </div>
+    
+
     <div class="container">
       <div class="main">
         <div class="topber">
             <a href="#">Home</a>
             <a href="#">work</a>
             <a href="#">Support</a>
-            <a onclick="logoutProfile()">logout</a>
+            <a id="ProfileLogout">logout</a>
         </div>
         <div class="row">
           <div class="col-md-4 mt-1">
             <div class="card text-center sidebar">
               <div class="card-body">
-                <!-- <img src="https://source.unsplash.com/400x400/?code,technology" class="rounded-circle" width="150"/> -->
-                 <img id="proimg" src="noimage.png" class="rounded-circle" width="150"/>
+                
+                <img id="proimg" src="noimage.png" class="rounded-circle" width="150"/>
                 <div class="mt-3">
                   <h3 id="nameFront"></h3>
                   <a href="#">Home</a>
@@ -93,5 +102,6 @@
       const isprofile=true;
     </script>
     <script type = "module" src="../firebase.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
