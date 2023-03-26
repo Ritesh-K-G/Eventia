@@ -81,19 +81,21 @@ if(isloginpage) {
   })
 }
 else if(ishomepage){
-
+  
   //----------------- user id printing in homepage ------------------------//
   onAuthStateChanged(auth, (user) => {
     //----------------- session implementation ------------------------//
     if (user) {
-      const uid = user.email;
-      document.getElementById("num").innerHTML= "hello "+ uid;
+      console.log(user.email);
+      //----------------- ongoing events details printing ------------------------//
     } 
     else{
       location.replace("../index.html");
     }
   });
+
   
+
   //----------------- user logout authentication ------------------------//
   document.getElementById("logoutbtn").onclick = function(){
     auth.signOut();
@@ -102,7 +104,7 @@ else if(ishomepage){
 }
 
 
-else if(isprofile){
+else if(isprofile) {
   //----------------- user id finding in profile ------------------------//
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -114,13 +116,13 @@ else if(isprofile){
             const data = doc.data();
             document.getElementById("name").innerHTML= data.name;
             document.getElementById("nameFront").innerHTML=data.name;
-            // document.getElementById("dob").innerHTML=data.dob;
+            document.getElementById("dob").innerHTML=data.dob;
             document.getElementById("email").innerHTML=data.email;
             document.getElementById("phone").innerHTML=data.phone;
             document.getElementById("description").innerHTML=data.description;
             document.getElementById("proimg").src = data.image;
           }
-          else{
+          else {
             console.log("NO SUCH USER EXIST");
           }
         })

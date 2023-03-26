@@ -17,8 +17,8 @@
             <ul class="navigation">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">contact</a></li>
-                <li><a href="#">about</a></li>
                 <li><a href="../profile-page/">Profile</a></li>
+                <li><a id="logoutbtn">logout</a></li>
             </ul>
         </header>
 
@@ -32,7 +32,7 @@
     
     <section class="ongoing_card">
         <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
+            <div id="events-ongoing" class="swiper-wrapper">
               <div class="swiper-slide">
                 <div class="card">
                   <img
@@ -54,13 +54,6 @@
                 </div>
               </div>
               <div class="swiper-slide">Slide 2</div>
-              <div class="swiper-slide">Slide 3</div>
-              <div class="swiper-slide">Slide 4</div>
-              <div class="swiper-slide">Slide 5</div>
-              <div class="swiper-slide">Slide 6</div>
-              <div class="swiper-slide">Slide 7</div>
-              <div class="swiper-slide">Slide 8</div>
-              <div class="swiper-slide">Slide 9</div>
             </div>
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
@@ -71,6 +64,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
+    <script type = "module" src="../firebase.js"></script>
     <script>
       const ishomepage=true;
       const isloginpage=false;
