@@ -118,8 +118,6 @@ body {
 }
 
 
-
-
 .swiper {
   width: 100%;
   height: 100%;
@@ -173,7 +171,6 @@ body {
   object-fit: cover;
 }
 
-
 .card button {
   right: 4%;
   bottom: 2%;
@@ -182,7 +179,7 @@ body {
 .card-content {
   display: flex;
   flex-direction: column;
-  height: 470px;
+  height: 400px;
   width: 50%;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.8);
@@ -191,11 +188,6 @@ body {
   align-items: center;
 }
 
-.active {
-  opacity: 1;
-  width: 100%;
-  position: absolute;
-}
 
 .card-content h2 {
   margin: 10px 0px;
@@ -226,24 +218,6 @@ body {
   color: #fff;
 }
 
-.btn {
-  /*   margin: ; */
-  padding: 10px 20px;
-  border-radius: 5px;
-  height: 50px;
-  width: 100px;
-  background-color: #322a2a;
-  color: white;
-  font-weight: 700;
-  font-size: 15px;
-  border: none;
-}
-
-.btn:hover {
-  background-color: white;
-  color: #322a2a;
-}
-
 /* UPCOMING EVENTS cards-------------------------------------------------------------------------------------- */
 
 .upcoming_card {
@@ -256,9 +230,85 @@ body {
   font-size: 30px;
   font-weight: bold;
   color: #35373a;
-
+  
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin: 0px 250px
+  margin: 0px 250px;
+  margin-bottom: 25px;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 25px;
+  margin-bottom: 40px;
+
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.card1{
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  width: 100%;
+  border-radius: 25px;
+  background-color: #2964c9;
+}
+
+.card-content1{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 14px;
+}
+
+.name{
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+.description{
+  font-size: 14px;
+  color: #707070;
+  text-align: center;
+}
+.button{
+  border: none;
+  font-size: 16px;
+  color: #FFF;
+  padding: 8px 16px;
+  background-color: #4070F4;
+  border-radius: 6px;
+  margin: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.button:hover{
+  background: #265DF2;
+}
+
+
+
+
+/* ======================================================================================= */
+
+.reviews{
+  height: 500px;
 }

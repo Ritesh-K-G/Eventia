@@ -1,38 +1,55 @@
-let swiper1 = new Swiper(".mySwiper", {
+let swiper1 = new Swiper('.Swiper1', {
+  slidesPerView: 1,
+  centeredSlides: true,
+  autoplay: {
+    delay: 2500,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true,
+  },
+  loop: Infinity,
+  pagination: {
+    el: ".swiper-pagination1",
+    clickable: true,
+  },
+  grabCursor: true,
+  // followFinger: true,
+  
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
 
-    centeredSlides: true,
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-      loop: true,
-    },
-    
-    pagination: {
-      el: ".swiper-pagination",
+let swiper3 = new Swiper('.swiper3', {
+  slidesPerView: 3,
+  spaceBetween: 30,
+  pagination: {
+      el: '.swiper-pagination3',
       clickable: true,
-    },
-    grabCursor: true,
-    // followFinger: true,
-    
-    navigation: {
+  },
+  navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
-    },
-  });
-
-
-let details = document.querySelector('.card-content');
-const detailsbutton = document.querySelector('.btn');
-detailsbutton.addEventListener('click', () => {
-  details.classList.add('active');
+  },
 });
 
 
-const readlessbutton = document.querySelector('.readless');
-readlessbutton.addEventListener('click', () => {
-  details.classList.remove('active');
-});
+
+// let details = document.querySelector('.card-content');
+// const detailsbutton = document.querySelector('.btn');
+// detailsbutton.addEventListener('click', () => {
+//   details.classList.add('active');
+// });
+
+
+// const readlessbutton = document.querySelector('.readless');
+// readlessbutton.addEventListener('click', () => {
+//   details.classList.remove('active');
+// });
+
+
+
+
 
 
 
@@ -51,18 +68,18 @@ readlessbutton.addEventListener('click', () => {
 //     else{
 //         Start=1;
 //     }
-    
+  
 //     // let img = slides[Start-1];
 //     // console.log(img);
 //     upSection.style.backgroundImage = `url(${slides[Start-1]})`;
-   
+ 
 // }
 
 // setInterval(slider,2000);
 
 
 
-    
+  
 
-    
+  
 
