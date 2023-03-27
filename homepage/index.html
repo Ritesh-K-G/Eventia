@@ -2,73 +2,77 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <section class="up-section">
-        <header class="header">
-            <a href="#" class="logo">EVENTIA</a>
-            <ul class="navigation">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">contact</a></li>
-                <li><a href="../profile-page/">Profile</a></li>
-                <li><a id="logoutbtn">logout</a></li>
-            </ul>
-        </header>
+  <section class="up-section">
+    <header class="header">
+      <a href="#" class="logo">EVENTIA</a>
+      <ul class="navigation">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">contact</a></li>
+        <li><a href="../profile-page/">Profile</a></li>
+        <li><a id="logoutbtn">logout</a></li>
+      </ul>
+    </header>
 
-        <input class="search" type="search" placeholder=" Search any event">
-
-
-    </section>
-    <div class="ongoing">
-        <h1>ON GOING EVENTS</h1>
+    <input class="search" type="search" placeholder=" Search any event">
+    <div class="homepageimg">
+      <img src="Photos\undraw_software_engineer_re_tnjc.svg" alt="">
     </div>
-    
-    <section class="ongoing_card">
-        <div class="swiper mySwiper">
-            <div id="events-ongoing" class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div class="card">
-                  <img
-                    src="https://img.freepik.com/free-vector/hand-drawn-collage-background_23-2149590537.jpg? 
-              t=st=1679569287~exp=1679569887~hmac=28f57c960ff12202e3f306ac4cbd26412b3bdf0e6fb87495dac0e8e825e0330f"
-                    alt="Card Image">
-                  <button class="btn">Details</button>
-                  <div class="card-content">
-                    <h2>Card Title</h2>
-                    <p>Card description goes here.lorem Card description goes here.lorem Card description goes
-                      here.lorem Card
-                      description goes here.lorem Card description goes here.lorem Card description goes here.lorem Card
-                      description goes here.lorem Card description goes here.lorem Card description goes here.lorem Card
-                      description goes here.lorem Card description goes here.lorem Card description goes here.lorem Card
-                      description goes here.lorem Card description goes here.lorem Card description goes here.lorem Card
-                      description goes here.lorem</p>
-                    <a href="#">Read Less</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-          </div>
-        
-    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="script.js"></script>
-    <script type = "module" src="../firebase.js"></script>
-    <script>
-      const ishomepage=true;
-      const isloginpage=false;
-      const isprofile=false;
-    </script>
+
+  </section>
+
+  <section class="ongoing_card">
+    <div class="ongoing">
+      <h1>ONGOING EVENTS</h1>
+    </div>
+
+    <div class="swiper mySwiper">
+      <div id="events-ongoing" class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="card">
+
+            <div class="card_img">
+              <img src="Photos\undraw_festivities_tvvj.svg" alt="Card Image">
+            </div>
+
+            <div class="card-content">
+              <h2>Card Title</h2>
+              <p>Strange games</p>
+              <a class="readless" href="#">Details</a>
+            </div>
+          </div>
+        </div>        
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+  </section>
+
+  <section class="upcoming_card">
+    <div class="upcoming">
+      <h1>UPCOMING EVENTS</h1>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="script.js"></script>
+  <script type="module" src="../firebase.js"></script>
+  <script>
+    const ishomepage=true;
+    const isloginpage=false;
+    const isprofile=false;
+  </script>
 </body>
 
 </html>

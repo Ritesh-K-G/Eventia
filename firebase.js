@@ -95,19 +95,18 @@ else if(ishomepage){
             const card = document.createElement('div');
             card.classList = 'swiper-slide';
             const eventCard = `
-              <div class="swiper-slide">
-                <div class="card">
-                  <img
-                    src="${doc.data().photoURL}"
-                    alt="Card Image">
-                  <button class="btn">Details</button>
-                  <div class="card-content">
-                    <h2>${doc.data().name}</h2>
-                    <p>${doc.data().description}</p>
-                    <a href="#">Read Less</a>
-                  </div>
-                </div>
-              </div>
+            <div class="card">
+
+            <div class="card_img">
+              <img src="${doc.data().photoURL}" alt="Card Image">
+            </div>
+
+            <div class="card-content">
+              <h2>${doc.data().name}</h2>
+              <p>${doc.data().description}</p>
+              <a class="readless" href="#">Details</a>
+            </div>
+          </div>
             `;
             card.innerHTML += eventCard;
             main.appendChild(card);

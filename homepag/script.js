@@ -1,41 +1,27 @@
-let swiper1 = new Swiper(".mySwiper", {
-
+let swiper = new Swiper(".mySwiper", {
+    spaceBetween: 30,
     centeredSlides: true,
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-      loop: true,
+      pauseOnMouseEnter	: true,
     },
-    
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
     },
     grabCursor: true,
-    // followFinger: true,
-    
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
-  });
-
+});
 
 let details = document.querySelector('.card-content');
-const detailsbutton = document.querySelector('.btn');
-detailsbutton.addEventListener('click', () => {
+const button = document.querySelector('.btn');
+button.addEventListener('click', () => {
   details.classList.add('active');
 });
-
-
-const readlessbutton = document.querySelector('.readless');
-readlessbutton.addEventListener('click', () => {
-  details.classList.remove('active');
-});
-
-
-
 
 // let upSection = document.getElementsByClassName("up-section")[0];
 
