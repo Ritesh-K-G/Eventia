@@ -89,30 +89,54 @@ else if(ishomepage){
       //----------------- ongoing events details printing ------------------------//
       const eventdb = collection(db, 'events');
       getDocs(eventdb)
-        .then((snapshot) => {
-          snapshot.docs.forEach((doc) => {
-            const main = document.querySelector("#events-ongoing");
-            const card = document.createElement('div');
-            card.classList = 'swiper-slide';
-            const eventCard = `
-            <div class="card">
-
-            <div class="card_img">
+      .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+            var date = Date.now();
+            var start = doc.data().start; 
+            var end = doc.data().end;
+            console.log(date);
+            console.log(start.toMillis());
+            console.log(end.toMillis());
+            if(date >= start.toMillis() && date <= end.toMillis()) {
+      
+              const main = document.querySelector("#events-ongoing");
+              const card = document.createElement('div');
+              card.classList = 'swiper-slide';
+              const eventCard = `
+              <div class="card">
+              <div class="card_img">
               <img src="${doc.data().photoURL}" alt="Card Image">
-            </div>
-
-            <div class="card-content">
+              </div>
+              <div class="card-content">
               <h2>${doc.data().name}</h2>
               <p>${doc.data().description}</p>
               <a class="readless" href="#">Details</a>
-            </div>
-          </div>
+              </div>
+              </div>
+              `;
+              card.innerHTML += eventCard;
+              main.appendChild(card);
+            }
+              
+            //----------------- upcoming events details printing ------------------------//
+            const upcomingMain = document.querySelector("#events-upcoming");
+            const upcomingCard = document.createElement('div');
+            upcomingCard.classList = 'swiper-slide';
+            const eventupcomingCard = `
+              <div class="card1">
+                <img class = "img1" src = "${doc.data().photoURL}" alt="Card Image">
+              </div>
+              <div class="card-content1">
+                <h2 class="name">${doc.data().name}</h2>
+                <p class="description">${doc.data().description}</p>
+                <button class="button">View More</button>
+              </div>
             `;
-            card.innerHTML += eventCard;
-            main.appendChild(card);
+            upcomingCard.innerHTML += eventupcomingCard;
+            upcomingMain.appendChild(upcomingCard);
           })
         })
-    } 
+    }
     else{
       location.replace("../index.html");
     }
