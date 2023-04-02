@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 html {
   height: 100%;
   width: 100%;
@@ -40,6 +40,7 @@ body {
 }
 
 .logo {
+  font-family: 'Dancing Script', cursive;
   font-size: 100px;
   font-weight: 700;
   text-decoration: none;
@@ -91,11 +92,11 @@ body {
   background: none;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.15) 5px 4.95px 1.6px;
+  padding-left: 6px;
   background-image: url('https://img.icons8.com/ios-glyphs/1x/search.png');
   background-repeat: no-repeat;
-  background-position: right center;
+  background-position: right 6px center;
   font-size: 15px;
-
 }
 
 .ongoing_card {
@@ -105,16 +106,20 @@ body {
 }
 
 .ongoing {
-
   font-size: 30px;
   font-weight: bold;
   color: #35373a;
-
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 20px;
   margin: 0px 250px;
+}
+.ongoing h1 {
+  font-family: 'Dancing Script', cursive;
+}
+.upcoming h1{
+  font-family: 'Dancing Script', cursive;
 }
 
 

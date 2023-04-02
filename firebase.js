@@ -37,7 +37,7 @@ if(isloginpage) {
     .catch((error)=>{
       const errorCode = error.code;
       const errorMessage = error.errorMessage;
-      alert(errorMessage);
+      alert("Invalid ID or Password");
     })
   });
 
