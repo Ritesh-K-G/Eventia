@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { getFirestore, collection, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -148,8 +148,6 @@ else if(ishomepage){
     navigate("/");
   }
 }
-
-
 else if(isprofile) {
   //----------------- user id finding in profile ------------------------//
   onAuthStateChanged(auth, (user) => {
@@ -217,14 +215,10 @@ else if(isprofile) {
     });
   });
 }
-
-
 else if(isHost) {
   //----------------- user id finding in profile ------------------------//
-  var userID;
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      userID = user.uid;
     } 
     else{
       location.replace("../index.html");
@@ -234,73 +228,66 @@ else if(isHost) {
   //-----------------adding event to database ------------------------//
   const eventupform= document.querySelector('.event-upload-form')
   eventupform.addEventListener('submit',(e)=>{
-    e.preventDefault()
+    e.preventDefault();
 
     const naam = document.getElementById('naam').value;
     const host = auth.currentUser.uid;
     const description = document.getElementById('description').value;
-    const startDate = document.getElementById('startDate').value;
     const startTime = document.getElementById('startTime').value;
-    const endDate = document.getElementById('endDate').value;
     const endTime = document.getElementById('endTime').value;
-    const img = document.getElementById('img').value;
-    if(naam=="" || description=="" || !startDate || !startTime || !endDate || !endTime) {
+    if(naam=="" || description=="" || !startTime || !endTime) {
       alert("Enter All Fields");
     }
     else{ 
-      //----------------- Converting start,end date-time to timestamp ------------------------//
-      const sDate = new Date(startDate);
-      const sTime = new Date(startTime);
-      const combinedDateTimeStart = new Date(sDate);
-      combinedDateTimeStart.setHours(sTime.getHours());
-      combinedDateTimeStart.setMinutes(sTime.getMinutes());
-      const startTimestamp = combinedDateTimeStart.getTime();
 
-      const eDate = new Date(endDate);
-      const eTime = new Date(endTime);
-      const combinedDateTimeEnd = new Date(eDate);
-      combinedDateTimeEnd.setHours(eTime.getHours());
-      combinedDateTimeEnd.setMinutes(eTime.getMinutes());
-      const EndTimestamp = combinedDateTimeEnd.getTime();
+      //----------------- Converting start,end date-time to timestamp ------------------------//
+      const StartdatetimeValue = startTime;
+      const Sdatetime = new Date(StartdatetimeValue);
+      const Stimestamp = Sdatetime.getTime();
+
+      const EtartdatetimeValue = endTime;
+      const Edatetime = new Date(EtartdatetimeValue);
+      const Etimestamp = Edatetime.getTime();
       //----------------- Adding event data to events database ------------------------//
-      const userRef1 =  doc(db, "events", cred.user.uid);
-      setDoc(userRef1, {
+      const eventDataRef = collection(db, "events");
+      addDoc(eventDataRef, {
         name: naam,
         host: host,
         description: description,
-        start: startTimestamp,
-        end: EndTimestamp,
+        start: Stimestamp,
+        end: Etimestamp,
       })
-        .then((eventRef) => {
+      .then((eventRef) => {
+          const eventId = eventRef.id;
           //----------------- Adding event image to events storage ------------------------//
-          const storageRef = ref(storage,`pic/events/${eventRef.id}/display-image`);
-          const eventsDocRef = doc(firestore, "events", eventRef.id);
-          uploadBytes(storageRef, img)
+          const storageRef1 = ref(storage,`pic/events/${eventId}/display-image`)
+          const eventsDocRef = doc(firestore, "events", eventId);
+          uploadBytes(storageRef1, eventImg)
             .then(() => {
-              // console.log("File uploaded successfully!");
-              getDownloadURL(storageRef)
+              console.log("File uploaded successfully!");
+              getDownloadURL(storageRef1)
                 .then((url) => {
-                  // console.log("File download URL:", url);
+                  console.log("File download URL:", url);
                   updateDoc(eventsDocRef, {
                     photoURL: url
                   })
                     .then(() => {
-                      // console.log("User profile image updated successfully!");
+                      console.log("Event profile image updated successfully!");
                       alert("Event added");
-                      location.reload();
+                      location.replace("../homepage/");
                     })
                     .catch((error) => {
-                      // console.error("Error updating user image:", error);
+                      console.error("Error updating event image:", error);
                       alert(error.message);
                     });
                 })
                 .catch((error) => {
-                  // console.error("Error getting file download URL:", error);
+                  console.error("Error getting file download URL:", error);
                   alert(error.message);
                 });
               })
               .catch((error) => {
-                // console.error("Error uploading file:", error);
+                console.error("Error uploading file:", error);
                 alert(error.message);
               });
             })

@@ -1,0 +1,138 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<style> 
+
+    body {  
+      font-family: Calibri, Helvetica, sans-serif;  
+      /* background: linear-gradient(135deg, #c3cb6e, #a32727); */
+  /* background-image: url("3046713_32579.jpg"); */
+  /* background-repeat: no-repeat; 
+ background-size: cover;
+    */
+    /* overflow: hidden; */
+    }
+    .container {  
+      padding: 50px;  
+      background-color: #FFFFFF;  
+      border-radius: 10px;  
+      box-shadow: 0px 0px 10px #C0C0C0;  
+      max-width: 700px;  
+      margin: 0 auto;
+      border: 3px solid black; 
+      overflow-y: scroll;
+    } 
+    .h1{
+        font-size: 36px;
+    }
+      
+    input[type=text], input[type=password], textarea {  
+      width: 100%;  
+      padding: 15px;  
+      margin: 5px 0 22px 0;  
+      display: inline-block;  
+      border: none;  
+      background: #F5F5F5;  
+      border-radius: 5px;  
+      box-sizing: border-box;  
+      font-size: 16px;  
+    }  
+    
+    input[type=text]:focus, input[type=password]:focus {  
+      background-color: #E0E0E0;  
+      outline: none;  
+    }  
+    
+    label {  
+      font-weight: bold;
+      font-size: x-large;
+      margin-bottom: 5px;  
+      display: block;  
+    }  
+    
+    hr {  
+      border: 1px solid black;  
+      margin-bottom: 25px;  
+    }  
+    
+    select {  
+      width: 100%;  
+      padding: 15px;  
+      margin: 5px 0 22px 0;  
+      display: inline-block;  
+      border: none;  
+      background: #F5F5F5;  
+      border-radius: 5px;  
+      box-sizing: border-box;  
+      font-size: 16px;  
+      background-repeat: no-repeat;  
+      background-position: calc(100% - 10px) center;  
+    }  
+    
+    div {  
+      padding: 20px 20px;  
+    }  
+    
+    .registerbtn {  
+      background-color: #4CAF50;  
+      color: white;  
+      padding: 16px 20px;  
+      margin: 8px 0;  
+      border: none;  
+      cursor: pointer;  
+      width: 100%;  
+      opacity: 0.9;  
+      border-radius: 5px;  
+      font-size: 16px;  
+      transition: opacity 0.3s;  
+    }  
+    
+    .registerbtn:hover {  
+      opacity: 1;  
+    }  
+    </style>
+</head>  
+<body>  
+  <form class="event-upload-form">
+    <div class="container">  
+    <center><h1>Event Host</h1></center>  
+    <hr>    
+    <div> 
+    <label for="psw-repeat"><b>Event Name</b></label>  
+    <input type="text" placeholder="Event name" id="naam" name="psw-repeat" value="my event" required>  
+        
+    <label>   
+    Event Type :  
+    </label>   
+      
+    <select>  
+    <option value="Cultural">Cultural</option>  
+    <option value="Technical">Technical</option>  
+    <option value="Sport">Sport</option>  
+    </select> 
+    <label for="datetime">Start Date and Time:</label>
+    <input type="datetime-local" id="startTime">
+    <label for="datetime">End Date and Time:</label>
+    <input type="datetime-local" id="endTime">
+    <label for="file">Upload event image: </label>
+    <input type="file" id="img" accept="image/*" onchange="imageSet(event)">
+    <label for="description">Event description: </label>
+    <textarea cols="80" rows="5" id="description" placeholder="Event details" required>  
+      this is desc
+    </textarea>
+    <button type="submit" class="registerbtn">HOST</button>
+  </form>
+<script>
+  const isloginpage=false;
+  const ishomepage=false;
+  const isprofile=false;
+  const isHost=true;
+  let eventImg;
+  function imageSet(event) {
+    eventImg=event.target.files[0];
+  }
+</script>
+<script type="module" src="../firebase.js"></script>
+</body>  
+</html>
