@@ -171,10 +171,13 @@ body {
 }
 
 .card_img img {
-  height: 100%;
-  width: 100%;
+  height: 400px;
+  width: 500px;
   object-fit: cover;
 }
+/* .img_setting{
+
+} */
 
 .card button {
   right: 4%;

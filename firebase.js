@@ -95,10 +95,12 @@ else if(ishomepage){
             var start = doc.data().start; 
             var end = doc.data().end;
             console.log(date);
-            console.log(start.toMillis());
-            console.log(end.toMillis());
-            if(date >= start.toMillis() && date <= end.toMillis()) {
-      
+            // console.log("hii"+start.toMillis());
+            // console.log("hii"+end.toMillis());
+            start = start.toMillis();
+            end = end.toMillis();
+            // console.log(date >= start.toMillis() && date <= end.toMillis());
+            if(date >= start && date <= end) {
               const main = document.querySelector("#events-ongoing");
               const card = document.createElement('div');
               card.classList = 'swiper-slide';
@@ -225,7 +227,7 @@ else if(isHost) {
     }
   });
   
-  //-----------------adding event to database ------------------------//
+  //-----------------adding event to database ------------------------//f
   const eventupform= document.querySelector('.event-upload-form')
   eventupform.addEventListener('submit',(e)=>{
     e.preventDefault();
