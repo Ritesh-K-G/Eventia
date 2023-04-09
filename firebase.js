@@ -97,8 +97,6 @@ else if(ishomepage){
             console.log(date);
             // console.log("hii"+start.toMillis());
             // console.log("hii"+end.toMillis());
-            start = start.toMillis();
-            end = end.toMillis();
             // console.log(date >= start.toMillis() && date <= end.toMillis());
             if(date >= start && date <= end) {
               const main = document.querySelector("#events-ongoing");
