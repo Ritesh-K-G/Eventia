@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
+import { getAuth, getRedirectResult, signInWithRedirect, GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
@@ -22,7 +22,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const firestore = getFirestore(app);
-
+const provider = new GoogleAuthProvider(app);
 //----------------- Different pages js functions ------------------------//
 if(isloginpage) {
   //----------------- user login authentication ------------------------//
@@ -79,6 +79,30 @@ if(isloginpage) {
         })
     }
   })
+
+  //------------------signup with google-------------------------------//
+  const googleSignupIcons = document.querySelectorAll('#googleSignup');
+  googleSignupIcons.forEach((icon) => {
+    icon.addEventListener('click', (e) => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+          // console.log(result);
+          console.log(auth);
+          // location.replace("homepage/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          const email = error.customData.email;
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          alert(errorMessage);
+        });
+    });
+  });
+  
 }
 else if(ishomepage){
   
@@ -94,11 +118,9 @@ else if(ishomepage){
             var date = Date.now();
             var start = doc.data().start; 
             var end = doc.data().end;
-            console.log(date);
+            // console.log(date);
             // console.log("hii"+start.toMillis());
             // console.log("hii"+end.toMillis());
-            start = start.toMillis();
-            end = end.toMillis();
             // console.log(date >= start.toMillis() && date <= end.toMillis());
             if(date >= start && date <= end) {
               const main = document.querySelector("#events-ongoing");
