@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
+import { getAuth, getRedirectResult, signInWithRedirect, GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
@@ -22,6 +22,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const firestore = getFirestore(app);
+let w,e,r,t,y;
+var q;
 
 //----------------- Different pages js functions ------------------------//
 if(isloginpage) {
@@ -79,6 +81,30 @@ if(isloginpage) {
         })
     }
   })
+
+  //------------------signup with google-------------------------------//
+  const googleSignupIcons = document.querySelectorAll('#googleSignup');
+  googleSignupIcons.forEach((icon) => {
+    icon.addEventListener('click', (e) => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+          // console.log(result);
+          console.log(auth);
+          // location.replace("homepage/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          const email = error.customData.email;
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          alert(errorMessage);
+        });
+    });
+  });
+  
 }
 else if(ishomepage){
   
@@ -94,29 +120,29 @@ else if(ishomepage){
             var date = Date.now();
             var start = doc.data().start; 
             var end = doc.data().end;
-            console.log(date);
+            // console.log(date);
             // console.log("hii"+start.toMillis());
             // console.log("hii"+end.toMillis());
             // console.log(date >= start.toMillis() && date <= end.toMillis());
-            if(date >= start && date <= end) {
-              const main = document.querySelector("#events-ongoing");
-              const card = document.createElement('div');
-              card.classList = 'swiper-slide';
-              const eventCard = `
-              <div class="card">
-              <div class="card_img">
-              <img src="${doc.data().photoURL}" alt="Card Image">
-              </div>
-              <div class="card-content">
-              <h2>${doc.data().name}</h2>
-              <p>${doc.data().description}</p>
-              <a class="readless" href="#">Details</a>
-              </div>
-              </div>
-              `;
-              card.innerHTML += eventCard;
-              main.appendChild(card);
-            }
+            // if(date >= start && date <= end) {
+            //   const main = document.querySelector("#events-ongoing");
+            //   const card = document.createElement('div');
+            //   card.classList = 'swiper-slide';
+            //   const eventCard = `
+            //   <div class="card">
+            //   <div class="card_img">
+            //   <img src="${doc.data().photoURL}" alt="Card Image">
+            //   </div>
+            //   <div class="card-content">
+            //   <h2>${doc.data().name}</h2>
+            //   <p>${doc.data().description}</p>
+            //   <a class="readless" href="#">Details</a>
+            //   </div>
+            //   </div>
+            //   `;
+            //   card.innerHTML += eventCard;
+            //   main.appendChild(card);
+            // }
               
             //----------------- upcoming events details printing ------------------------//
             const upcomingMain = document.querySelector("#events-upcoming");
@@ -134,6 +160,12 @@ else if(ishomepage){
             `;
             upcomingCard.innerHTML += eventupcomingCard;
             upcomingMain.appendChild(upcomingCard);
+            const viewMoreButton = upcomingCard.querySelector('.button');
+            viewMoreButton.addEventListener('click', () => {
+              localStorage.setItem("r",doc.id);
+              console.log(localStorage.getItem("r"));
+              window.location.replace("../register/");
+            });
           })
         })
     }
@@ -148,6 +180,45 @@ else if(ishomepage){
     navigate("/");
   }
 }
+else if(isRegister) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(localStorage.getItem("r"));
+      let q=localStorage.getItem("r");
+      let eventRef = doc(db, 'events', q);
+      getDoc(eventRef)
+        .then((doc) => {
+          w=doc.data();
+          document.getElementById("title").innerHTML = w.name;
+          document.getElementById("description").innerHTML = w.description;
+          document.getElementById("img").src = w.photoURL;
+        })
+        .catch((err)=> {
+          // alert(err);
+          // alert("Error in fetching event details");
+        })
+    } 
+    else{
+      location.replace("../index.html");
+    }
+  });
+  document.getElementById("reg").addEventListener('click', function() {
+    const attendeeRef = collection(db, "attendees");
+    const host = auth.currentUser.uid;
+    let eveID=localStorage.getItem("r");
+    addDoc(attendeeRef, {
+      attendee: host,
+      event: eveID,
+    })
+      .then(()=> {
+        alert("Successfully registered for the event");
+      })
+      .catch(()=>{
+        alert("Error in registration");
+      })
+  })
+
+}
 else if(isprofile) {
   //----------------- user id finding in profile ------------------------//
   onAuthStateChanged(auth, (user) => {
@@ -158,11 +229,21 @@ else if(isprofile) {
         .then((doc) => {
           if(doc.exists()){
             const data = doc.data();
-            document.getElementById("name").innerHTML= data.name;
+            // console.log(data);
+            // console.log(data.name);
+            var dateTimeDob = data.dob;
+            var date = dateTimeDob.toDate();
+            var day = date.getDate().toString().padStart(2, '0');
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // +1 because January is 0
+            var year = date.getFullYear().toString();
+            const finalDob= `${day}-${month}-${year}`;
+            // console.log(finalDob);
+            // console.log(data.dob);
+            document.getElementById("name").innerHTML= "Name: &emsp;&emsp;"+data.name;
             document.getElementById("nameFront").innerHTML=data.name;
-            document.getElementById("dob").innerHTML=data.dob;
-            document.getElementById("email").innerHTML=data.email;
-            document.getElementById("phone").innerHTML=data.phone;
+            document.getElementById("dob").innerHTML="DOB: &emsp;&emsp;&emsp;"+finalDob;
+            document.getElementById("email").innerHTML="Email:  &nbsp;&emsp;&emsp;"+ data.email;
+            document.getElementById("phone").innerHTML="Contact: &emsp;"+data.phone;
             document.getElementById("description").innerHTML=data.description;
             document.getElementById("proimg").src = data.image;
           }
@@ -171,7 +252,7 @@ else if(isprofile) {
           }
         })
         .catch((err) => {
-          alert("select query error");
+          alert(err);
         });
     } 
     else{
