@@ -22,7 +22,9 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const firestore = getFirestore(app);
-const provider = new GoogleAuthProvider(app);
+let w,e,r,t,y;
+var q;
+
 //----------------- Different pages js functions ------------------------//
 if(isloginpage) {
   //----------------- user login authentication ------------------------//
@@ -122,25 +124,25 @@ else if(ishomepage){
             // console.log("hii"+start.toMillis());
             // console.log("hii"+end.toMillis());
             // console.log(date >= start.toMillis() && date <= end.toMillis());
-            if(date >= start && date <= end) {
-              const main = document.querySelector("#events-ongoing");
-              const card = document.createElement('div');
-              card.classList = 'swiper-slide';
-              const eventCard = `
-              <div class="card">
-              <div class="card_img">
-              <img src="${doc.data().photoURL}" alt="Card Image">
-              </div>
-              <div class="card-content">
-              <h2>${doc.data().name}</h2>
-              <p>${doc.data().description}</p>
-              <a class="readless" href="#">Details</a>
-              </div>
-              </div>
-              `;
-              card.innerHTML += eventCard;
-              main.appendChild(card);
-            }
+            // if(date >= start && date <= end) {
+            //   const main = document.querySelector("#events-ongoing");
+            //   const card = document.createElement('div');
+            //   card.classList = 'swiper-slide';
+            //   const eventCard = `
+            //   <div class="card">
+            //   <div class="card_img">
+            //   <img src="${doc.data().photoURL}" alt="Card Image">
+            //   </div>
+            //   <div class="card-content">
+            //   <h2>${doc.data().name}</h2>
+            //   <p>${doc.data().description}</p>
+            //   <a class="readless" href="#">Details</a>
+            //   </div>
+            //   </div>
+            //   `;
+            //   card.innerHTML += eventCard;
+            //   main.appendChild(card);
+            // }
               
             //----------------- upcoming events details printing ------------------------//
             const upcomingMain = document.querySelector("#events-upcoming");
@@ -158,6 +160,12 @@ else if(ishomepage){
             `;
             upcomingCard.innerHTML += eventupcomingCard;
             upcomingMain.appendChild(upcomingCard);
+            const viewMoreButton = upcomingCard.querySelector('.button');
+            viewMoreButton.addEventListener('click', () => {
+              localStorage.setItem("r",doc.id);
+              console.log(localStorage.getItem("r"));
+              window.location.replace("../register/");
+            });
           })
         })
     }
@@ -171,6 +179,45 @@ else if(ishomepage){
     auth.signOut();
     navigate("/");
   }
+}
+else if(isRegister) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(localStorage.getItem("r"));
+      let q=localStorage.getItem("r");
+      let eventRef = doc(db, 'events', q);
+      getDoc(eventRef)
+        .then((doc) => {
+          w=doc.data();
+          document.getElementById("title").innerHTML = w.name;
+          document.getElementById("description").innerHTML = w.description;
+          document.getElementById("img").src = w.photoURL;
+        })
+        .catch((err)=> {
+          // alert(err);
+          // alert("Error in fetching event details");
+        })
+    } 
+    else{
+      location.replace("../index.html");
+    }
+  });
+  document.getElementById("reg").addEventListener('click', function() {
+    const attendeeRef = collection(db, "attendees");
+    const host = auth.currentUser.uid;
+    let eveID=localStorage.getItem("r");
+    addDoc(attendeeRef, {
+      attendee: host,
+      event: eveID,
+    })
+      .then(()=> {
+        alert("Successfully registered for the event");
+      })
+      .catch(()=>{
+        alert("Error in registration");
+      })
+  })
+
 }
 else if(isprofile) {
   //----------------- user id finding in profile ------------------------//
