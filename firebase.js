@@ -182,11 +182,21 @@ else if(isprofile) {
         .then((doc) => {
           if(doc.exists()){
             const data = doc.data();
-            document.getElementById("name").innerHTML= data.name;
+            // console.log(data);
+            // console.log(data.name);
+            var dateTimeDob = data.dob;
+            var date = dateTimeDob.toDate();
+            var day = date.getDate().toString().padStart(2, '0');
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // +1 because January is 0
+            var year = date.getFullYear().toString();
+            const finalDob= `${day}-${month}-${year}`;
+            // console.log(finalDob);
+            // console.log(data.dob);
+            document.getElementById("name").innerHTML= "Name: &emsp;&emsp;"+data.name;
             document.getElementById("nameFront").innerHTML=data.name;
-            document.getElementById("dob").innerHTML=data.dob;
-            document.getElementById("email").innerHTML=data.email;
-            document.getElementById("phone").innerHTML=data.phone;
+            document.getElementById("dob").innerHTML="DOB: &emsp;&emsp;&emsp;"+finalDob;
+            document.getElementById("email").innerHTML="Email:  &nbsp;&emsp;&emsp;"+ data.email;
+            document.getElementById("phone").innerHTML="Contact: &emsp;"+data.phone;
             document.getElementById("description").innerHTML=data.description;
             document.getElementById("proimg").src = data.image;
           }
@@ -195,7 +205,7 @@ else if(isprofile) {
           }
         })
         .catch((err) => {
-          alert("select query error");
+          alert(err);
         });
     } 
     else{

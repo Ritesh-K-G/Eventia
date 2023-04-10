@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li>
-                <a href="#sign-out">
+                <a id="ProfileLogout" >
                     <i class="fa fa-sign-out-alt fa-2x"></i>
                 </a>
             </li>
@@ -47,25 +47,24 @@
     <!-- Sidenav -->
     <div class="sidenav">
         <div class="profile">
-            <img src="https://i.pinimg.com/564x/34/23/27/342327463d2c4d4de8381115a9672f0f.jpg" alt="" width="200" height="200">
+            <img id="proimg" src="noimage.png" alt="" width="200" height="200">
 
-            <div class="name">
-                ImDezCode
+            <div id="nameFront" class="name">
             </div>
-            <div class="job">
+            <div id="description" class="job">
                 Web Developer
             </div>
         </div>
 
         <div class="sidenav-url">
             <div class="url">
-                <a href="#profile" class="active">Profile</a>
+                <a class="active">Profile</a>
             </div>
             <div class="url">
-                <a href="#Home">Home</a>
+                <a href="/homepage/index.html">Home</a>
             </div>
             <div class="url">
-                <a href="#settings">Update</a>
+                <a href="#Update">Update</a>
             </div>
         </div>
     </div>
@@ -80,9 +79,7 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>Name</td>
-                            <td>:</td>
-                            <td>ImDezCode</td>
+                            <td id="name"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -94,9 +91,7 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>Email</td>
-                            <td>:</td>
-                            <td>imdezcode@gmail.com</td>
+                            <td id="email"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,9 +103,7 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>Hobbies</td>
-                            <td>:</td>
-                            <td>Diving, Reading Book</td>
+                            <td id="phone"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -122,23 +115,7 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>Job</td>
-                            <td>:</td>
-                            <td>Web Developer</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Skill</td>
-                            <td>:</td>
-                            <td>PHP, HTML, CSS, Java</td>
+                            <td id="dob"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -151,7 +128,7 @@
             <div class="card-body">
 
                 <div class="social-media">
-                    <a href="#" class="social-icon">
+                    <a href="https://www.facebook.com/profile.php?id=100005016812505" class="social-icon">
                         <i class="fab fa-facebook-f"></i>
                     </a>
                     <a href="#" class="social-icon">
@@ -160,7 +137,7 @@
                     <a href="#" class="social-icon">
                         <i class="fab fa-google"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="https://www.linkedin.com/in/parth-garg-3a7a25234/" class="social-icon">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
                     <a href="#" class="social-icon">
@@ -171,6 +148,13 @@
         </div>
     </div>
     <!-- End -->
+    <script>
+        const ishomepage=false;
+        const isloginpage=false;
+        const isprofile=true;
+        const isHost=false;
+      </script>
+    <script type = "module" src="/firebase.js"></script>
 </body>
 
 </html>

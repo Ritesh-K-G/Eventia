@@ -36,7 +36,6 @@ body::-webkit-scrollbar {
   align-items: center;
 }
 
-
 .header {
   position: absolute;
   top: 0;
@@ -376,9 +375,10 @@ body::-webkit-scrollbar {
   border-radius: 25px;
 }
 
-.upcoming_card .swiper .swiper-wrapper{
+/* .upcoming_card .swiper .swiper-wrapper{
   margin-left: 30px;
-}
+  /* margin-right: 50px; */
+} */
 
 
 /* ======================================================================================= */
