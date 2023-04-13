@@ -197,7 +197,7 @@ else if(isRegister) {
           // alert(err);
           // alert("Error in fetching event details");
         })
-    } 
+    }
     else{
       location.replace("../index.html");
     }
@@ -295,6 +295,88 @@ else if(isprofile) {
       alert(error.message);
     });
   });
+}
+else if(isProfileUpdate) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userid = user.uid;
+      const userRef = doc(db, 'users',userid);
+      getDoc(userRef)
+        .then((doc) => {
+          if(doc.exists()){
+            const data = doc.data();
+            document.getElementById("name").innerHTML= data.name;
+            document.getElementById("nameFront").innerHTML=data.name;
+            document.getElementById("dob").innerHTML=data.dob;
+            document.getElementById("email").innerHTML=data.email;
+            document.getElementById("phone").innerHTML=data.phone;
+            document.getElementById("description").innerHTML=data.description;
+            document.getElementById("proimg").src = data.image;
+          }
+        })
+        .catch((err) => {
+          alert("select query error");
+        });
+    }
+    else{
+      location.replace("../index.html");
+    }
+  });
+
+  document.getElementById("ProfileLogout").onclick = function() {
+    auth.signOut();
+    navigate("../index.html");
+  }
+
+  const profileUpdate= document.querySelector('.profile-update-form')
+  profileUpdate.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    const naam = document.getElementById('naam').value;
+    const phn = document.getElementById('phn').value;
+    const dob = document.getElementById('dob').value;
+    const desc = document.getElementById('description').value;
+    if(naam=="" || phn=="" || !dob){
+      alert("Enter All Fields");
+    }
+    else{
+      const userDocRef = doc(firestore, "users", auth.currentUser.uid);
+      updateDoc(userDocRef, {
+        name: naam,
+        phone: phn,
+        dob: dob,
+        description: desc,
+      })
+        .then(()=> {
+          alert("Profile updated successfully");
+        })
+        .catch(()=> {
+          alert("Profile can't be updated");
+        })
+    }
+  })
+
+  const fileInput= document.getElementById("upload-button");
+  fileInput.addEventListener("change",(event)=>{
+    const file = event.target.files[0];
+    const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
+    const userDocRef = doc(firestore, "users", auth.currentUser.uid);
+    uploadBytes(storageRef, file).then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        updateDoc(userDocRef, {
+          image: url
+        }).then(() => {
+          location.reload();
+        }).catch((error) => {
+          alert(error.message);
+        });
+      }).catch((error) => {
+        alert(error.message);
+      });
+    }).catch((error) => {
+      alert(error.message);
+    });
+  });
+  
 }
 else if(isHost) {
   //----------------- user id finding in profile ------------------------//
