@@ -63,9 +63,6 @@
             <div class="url">
                 <a href="/homepage/index.html">Home</a>
             </div>
-            <div class="url">
-                <a href="#Update">Update</a>
-            </div>
         </div>
     </div>
     <!-- End -->
@@ -75,50 +72,31 @@
         <h2>IDENTITY</h2>
         <div class="card">
             <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
+                <a id ="edit"><i style = "color: grey;"id = "edit_icon" class="fa fa-pen fa-xs edit"></i></a>
                 <table>
                     <tbody>
                         <tr>
-                            <td id="name"></td>
+                            <td >Name:</td>
+                            <td id="name">yuvraj</td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
-                <table>
-                    <tbody>
+                    
                         <tr>
-                            <td id="email"></td>
+                            <td >Email:</td>
+                            <td id="email">jindalyuvraj2@gmail.com</td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
-                <table>
-                    <tbody>
+                    
                         <tr>
-                            <td id="phone"></td>
+                            <td >Phone:</td>
+                            <td id="phone" >6280147330</td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
-                <table>
-                    <tbody>
+                    
                         <tr>
-                            <td id="dob"></td>
+                            <td >DOB:</td>
+                            <td id="dob">29-08-2003</td>
                         </tr>
                     </tbody>
                 </table>
+                <a id = "done_b"class="edit_done">Done</a>
             </div>
         </div>
 
@@ -146,6 +124,31 @@
                 </div>
             </div>
         </div>
+
+        <h2>PAST EVENTS</h2>
+        <div class="card">
+            <div class="card-body">
+
+                <div class="social-media">
+                    <a href="https://www.facebook.com/profile.php?id=100005016812505" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/parth-garg-3a7a25234/" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-snapchat"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
     <!-- End -->
     <script>
@@ -156,6 +159,7 @@
         const isRegister = false;
       </script>
     <script type = "module" src="/firebase.js"></script>
+    <script src = "script.js"></script>
 </body>
 
 </html>
