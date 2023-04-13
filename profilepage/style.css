@@ -189,4 +189,23 @@ hr {
     border-color: #4481eb;
   }
   
+  .edit_done{
+    width: 30%;
+    color: #f8f3f3;
+    font-size: 20px;
+    margin: 10px 0;
+    padding: 6px 8px;
+    text-decoration: none;
+    background-color: #4481eb;
+    border-radius: 28px;
+    /* display: hidden; */
+    visibility: hidden;
+  }
+  .edit_done:hover{
+    background-color: #1f59bd;
+    border-radius: 28px;
+    color: white;
+    cursor: pointer;
+  }
+
 /* End */
