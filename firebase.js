@@ -377,6 +377,30 @@ else if(isprofile) {
   //     alert(error.message);
   //   });
   // });
+
+    //----------------update image-----------------------------------------//
+  
+  const fileInput= document.getElementById("file");
+  fileInput.addEventListener("change",(event)=>{
+    const file = event.target.files[0];
+    const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
+    const userDocRef = doc(firestore, "users", auth.currentUser.uid);
+    uploadBytes(storageRef, file).then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        updateDoc(userDocRef, {
+          image: url
+        }).then(() => {
+          location.reload();
+        }).catch((error) => {
+          alert(error.message);
+        });
+      }).catch((error) => {
+        alert(error.message);
+      });
+    }).catch((error) => {
+      alert(error.message);
+    });
+  });
   
 }
 else if(isHost) {
