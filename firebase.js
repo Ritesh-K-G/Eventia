@@ -392,7 +392,7 @@ else if(isprofile) {
             document.getElementById("dob").innerHTML=data.dob;
             document.getElementById("email").innerHTML=data.email;
             document.getElementById("phone").innerHTML=data.phone;
-            // document.getElementById("description").innerHTML=data.description;
+            document.getElementById("description").innerHTML=data.description;
             document.getElementById("output").src = data.image;
           }
         })
@@ -414,7 +414,7 @@ else if(isprofile) {
     const naam = document.getElementById('name').textContent;
     const phn = document.getElementById('phone').textContent;
     const dob = document.getElementById('dob').textContent;
-    // const desc = document.getElementById('description').textContent;
+    const desc = document.getElementById('description').textContent;
     if(naam=="" || phn=="" || dob==""){
       alert("Enter All Fields");
     }
@@ -424,7 +424,7 @@ else if(isprofile) {
         name: naam,
         phone: phn,
         dob: dob,
-        // description: desc,
+        description: desc,
       })
         .then(()=> {
           // alert("Profile updated successfully");
@@ -456,6 +456,30 @@ else if(isprofile) {
   //     alert(error.message);
   //   });
   // });
+
+    //----------------update image-----------------------------------------//
+  
+  const fileInput= document.getElementById("file");
+  fileInput.addEventListener("change",(event)=>{
+    const file = event.target.files[0];
+    const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
+    const userDocRef = doc(firestore, "users", auth.currentUser.uid);
+    uploadBytes(storageRef, file).then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        updateDoc(userDocRef, {
+          image: url
+        }).then(() => {
+          location.reload();
+        }).catch((error) => {
+          alert(error.message);
+        });
+      }).catch((error) => {
+        alert(error.message);
+      });
+    }).catch((error) => {
+      alert(error.message);
+    });
+  });
   
 }
 else if(isHost) {

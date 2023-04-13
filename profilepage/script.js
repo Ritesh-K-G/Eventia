@@ -19,6 +19,7 @@ edit_doneb.addEventListener('click',()=>{
     edit_doneb.style.visibility = 'hidden';
     document.getElementById('name').setAttribute("contenteditable", "true");
     document.getElementById('name').style.border = 'none';
+    document.getElementById('description').style.border = 'none';
     // document.getElementById('email').setAttribute("contenteditable", "true");
     document.getElementById('phone').setAttribute("contenteditable", "true");
     document.getElementById('phone').style.border = 'none';
