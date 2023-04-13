@@ -299,85 +299,6 @@ else if(isRegister) {
   })
 
 }
-// else if() {
-//   //----------------- user id finding in profile ------------------------//
-//   onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//       const userid = user.uid;
-//       const userRef = doc(db, 'users',userid);
-//       // console.log(userRef);
-//       getDoc(userRef)
-//         .then((doc) => {
-//           if(doc.exists()){
-//             const data = doc.data();
-//             // console.log(data);
-//             // console.log(data.name);
-//             // var dateTimeDob = data.dob;
-//             // var date = dateTimeDob.toDate();
-//             // var day = date.getDate().toString().padStart(2, '0');
-//             // var month = (date.getMonth() + 1).toString().padStart(2, '0'); // +1 because January is 0
-//             // var year = date.getFullYear().toString();
-//             // const finalDob= `${day}-${month}-${year}`;
-//             // console.log(finalDob);
-//             // console.log(data.dob);
-//             document.getElementById("name").innerHTML= "Name: &emsp;&emsp;"+data.name;
-//             document.getElementById("nameFront").innerHTML=data.name;
-//             document.getElementById("dob").innerHTML = "DOB: &emsp;&emsp;&emsp;"+data.dob;
-//             document.getElementById("email").innerHTML="Email:  &nbsp;&emsp;&emsp;"+ data.email;
-//             document.getElementById("phone").innerHTML="Contact: &emsp;"+data.phone;
-//             document.getElementById("description").innerHTML=data.description;
-//             if(data.image)document.getElementById("proimg").src = data.image;
-//           }
-//           else {
-//             console.log("NO SUCH USER EXIST");
-//           }
-//         })
-//         .catch((err) => {
-//           alert(err);
-//         });
-//     } 
-//     else{
-//       location.replace("../index.html");
-//     }
-//   });
-  
-// //   //----------------- user logout authentication ------------------------//
-// //   document.getElementById("ProfileLogout").onclick = function() {
-// //     auth.signOut();
-// //     navigate("../index.html");
-// //   }
-
-
-//   //----------------update image-----------------------------------------//
-  
-//   // const fileInput= document.getElementById("upload-button");
-//   // fileInput.addEventListener("change",(event)=>{
-//   //   const file = event.target.files[0];
-//   //   const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
-//   //   const userDocRef = doc(firestore, "users", auth.currentUser.uid);
-//   //   uploadBytes(storageRef, file).then(() => {
-//   //     // console.log("File uploaded successfully!");
-//   //     getDownloadURL(storageRef).then((url) => {
-//   //       // console.log("File download URL:", url);
-//   //       updateDoc(userDocRef, {
-//   //         image: url
-//   //       }).then(() => {
-//   //         // console.log("User profile image updated successfully!");
-//   //         location.reload();
-//   //       }).catch((error) => {
-//   //         // console.error("Error updating user image:", error);
-//   //         alert(error.message);
-//   //       });
-//   //     }).catch((error) => {
-//   //       // console.error("Error getting file download URL:", error);
-//   //       alert(error.message);
-//   //     });
-//   //   }).catch((error) => {
-//   //     // console.error("Error uploading file:", error);
-//   //     alert(error.message);
-//   //   });
-//   // });
-// }
 else if(isprofile) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -392,7 +313,7 @@ else if(isprofile) {
             document.getElementById("dob").innerHTML=data.dob;
             document.getElementById("email").innerHTML=data.email;
             document.getElementById("phone").innerHTML=data.phone;
-            // document.getElementById("description").innerHTML=data.description;
+            document.getElementById("description").innerHTML=data.description;
             document.getElementById("output").src = data.image;
           }
         })
@@ -414,7 +335,7 @@ else if(isprofile) {
     const naam = document.getElementById('name').textContent;
     const phn = document.getElementById('phone').textContent;
     const dob = document.getElementById('dob').textContent;
-    // const desc = document.getElementById('description').textContent;
+    const desc = document.getElementById('description').textContent;
     if(naam=="" || phn=="" || dob==""){
       alert("Enter All Fields");
     }
@@ -424,7 +345,7 @@ else if(isprofile) {
         name: naam,
         phone: phn,
         dob: dob,
-        // description: desc,
+        description: desc,
       })
         .then(()=> {
           // alert("Profile updated successfully");
