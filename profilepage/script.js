@@ -4,6 +4,7 @@ let editable_icon = document.getElementById('edit_icon');
 editable.addEventListener('click',()=>{
     editable_icon.style.color = 'black';
     edit_doneb.style.visibility = 'visible';
+    edit_doneb.style.opacity = '1';
     document.getElementById('name').setAttribute("contenteditable", "true");
     document.getElementById('description').setAttribute("contenteditable", "true");
     document.getElementById('description').style.border = '1px solid black';
@@ -17,6 +18,7 @@ editable.addEventListener('click',()=>{
 edit_doneb.addEventListener('click',()=>{
     editable_icon.style.color = 'grey';
     edit_doneb.style.visibility = 'hidden';
+    edit_doneb.style.opacity = '0';
     document.getElementById('name').setAttribute("contenteditable", "true");
     document.getElementById('name').style.border = 'none';
     document.getElementById('description').style.border = 'none';

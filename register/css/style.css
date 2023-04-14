@@ -56,7 +56,7 @@ h6 {
 
 /* Prelaoder */
 
-/* #preloader {
+#preloader {
   position: fixed;
   left: 0;
   top: 0;
@@ -65,7 +65,7 @@ h6 {
   height: 100%;
   overflow: visible;
   background: #fff url("../img/preloader.svg") no-repeat center center;
-} */
+}
 
 /* Back to top button */
 
@@ -314,12 +314,35 @@ h6 {
   font-size: 13px;
 }
 
+.nav-menu li.cancel-tickets a {
+  color: #fff;
+  background: #ed2121;
+  padding: 7px 22px;
+  border-radius: 50px;
+  border: 2px solid #ed2121;
+  transition: all ease-in-out 0.3s;
+  font-weight: 500;
+  margin-left: 8px;
+  margin-top: 2px;
+  line-height: 1;
+  font-size: 13px;
+}
+
 .nav-menu li.buy-tickets a:hover {
   background: none;
 }
 
 .nav-menu li.buy-tickets:hover a:before,
 .nav-menu li.buy-tickets.menu-active a:before {
+  visibility: hidden;
+}
+
+.nav-menu li.cancel-tickets a:hover {
+  background: none;
+}
+
+.nav-menu li.cancel-tickets:hover a:before,
+.nav-menu li.cancel-tickets.menu-active a:before {
   visibility: hidden;
 }
 
