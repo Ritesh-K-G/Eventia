@@ -518,6 +518,7 @@ else if(isHost) {
 
     const naam = document.getElementById('naam').value;
     const host = auth.currentUser.uid;
+    const link = document.getElementById('joininglink').value;
     const description = document.getElementById('description').value;
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
@@ -526,7 +527,7 @@ else if(isHost) {
     for (let i = 0; i < rulesInputs.length; i++) {
       rules.push(rulesInputs[i].value);
     }
-    if(naam=="" || description=="" || !startTime || !endTime) {
+    if(naam=="" || description=="" || !startTime || !endTime || link=="") {
       alert("Enter All Fields");
     }
     else{ 
@@ -544,6 +545,7 @@ else if(isHost) {
       addDoc(eventDataRef, {
         name: naam,
         host: host,
+        link: link,
         description: description,
         start: Stimestamp,
         end: Etimestamp,
@@ -554,17 +556,29 @@ else if(isHost) {
           //----------------- Adding event image to events storage ------------------------//
           const storageRef1 = ref(storage,`pic/events/${eventId}/display-image`)
           const eventsDocRef = doc(firestore, "events", eventId);
+          const attendeesCollectionRef = collection(db, "attendees"); // assuming you have initialized your Firestore database instance as `db`
+          const attendeeDocRef = doc(attendeesCollectionRef, eventId);
+          setDoc(attendeeDocRef, {
+            attendee: arrayUnion(host)
+          })
+          .then(() => {
+            console.log("Attendee added successfully");
+          })
+          .catch((error) => {
+            console.error("Error adding attendee: ", error);
+          });
+
           uploadBytes(storageRef1, eventImg)
             .then(() => {
-              console.log("File uploaded successfully!");
+              // console.log("File uploaded successfully!");
               getDownloadURL(storageRef1)
                 .then((url) => {
-                  console.log("File download URL:", url);
+                  // console.log("File download URL:", url);
                   updateDoc(eventsDocRef, {
                     photoURL: url
                   })
                     .then(() => {
-                      console.log("Event profile image updated successfully!");
+                      // console.log("Event profile image updated successfully!");
                       alert("Event added");
                       // navigate("../homepage/");
                       location.replace(/homepage/);
