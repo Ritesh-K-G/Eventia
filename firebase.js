@@ -374,16 +374,66 @@ else if(isprofile) {
         .catch((err) => {
           alert("select query error");
         });
+
+        //----------------- Events details printing ------------------------//
+        const eventdb = collection(db, 'events');
+        getDocs(eventdb)
+          .then((snapshot) => {
+            snapshot.docs.forEach((dok) => {
+              const x=dok.id;
+              const attendeesRef = doc(db, 'attendees', x);
+              getDoc(attendeesRef)
+                .then((list)=> {
+                  if(list.data().attendee !== undefined && list.data().attendee.includes(auth.currentUser.uid)) {
+                    const parentDiv = document.querySelector("#attended");
+                    const upcomingCard = document.createElement('div');
+                    upcomingCard.classList = 'card2';
+                    const content = `
+                    <div class="card_img">
+                        <img src="https://static.wikia.nocookie.net/smurfsfanon/images/3/30/LD_Generic_Smurf_Profile.png/revision/latest/scale-to-width-down/190?cb=20200911190804"
+                            alt="">
+                    </div>
+
+                    <div class="top-text">
+                        <div class="name">Annie lea</div>
+                        <p>Apps Developer</p>
+                    </div>
+
+                    <div class="bottom-text">
+                        <div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quas quaerat
+                            sapiente ea. Illum laudantium quidem adipisci sed facere quibusdam quisquam excepturi
+                            molestias. Ut, dolor? Minima culpa officiis necessitatibus aspernatur.</div>
+                        <div class="btn">
+                            <a href="#">Read more</a>
+                        </div>
+                    </div>
+                    `;
+                    upcomingCard.innerHTML += content;
+                    parentDiv.appendChild(upcomingCard);
+                    //------------------------ Adding functionality to the button ------------------------//
+                    // const viewMoreButton = upcomingCard.querySelector('.button');
+                    // viewMoreButton.addEventListener('click', () => {
+                    //   localStorage.setItem("r",doc.id);
+                    //   console.log(localStorage.getItem("r"));
+                    //   window.location.replace("../register/");
+                    // });
+                  }
+                })
+            })
+          })
+          .catch(()=> {
+            console.log("Cannot fetch event details");
+          })
     }
     else{
       location.replace("../index.html");
     }
   });
 
-  // document.getElementById("ProfileLogout").onclick = function() {
-  //   auth.signOut();
-  //   navigate("../index.html");
-  // }
+  document.getElementById("ProfileLogout").onclick = function() {
+    auth.signOut();
+    navigate("../index.html");
+  }
   
   document.getElementById("done_b").addEventListener('click',()=>{
     const naam = document.getElementById('name').textContent;
