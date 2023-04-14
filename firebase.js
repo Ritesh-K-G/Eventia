@@ -416,16 +416,20 @@ else if(isHost) {
     //-------------------------  Rules  ----------------------------------//
     const ruleFieldsWrapper = document.getElementById("rule-fields-wrapper");
     const addRuleButton = ruleFieldsWrapper.querySelector("#add-rule-btn");
+    const removeRuleButton = ruleFieldsWrapper.querySelector("#remove-rule-btn");
     const optionsWrapper = document.querySelector(".options-wrapper");
     
     optionsWrapper.addEventListener("change", function(event) {
       if (event.target.value === "yes") {
         ruleFieldsWrapper.style.display = "block";
         addRuleButton.style.display = "block";
+        removeRuleButton.style.display = "block";
         ruleFieldsWrapper.appendChild(addRuleButton); // Append the button to the wrapper
+        ruleFieldsWrapper.appendChild(removeRuleButton); // Append the button to the wrapper
       } else {
         ruleFieldsWrapper.style.display = "none";
         addRuleButton.style.display = "none";
+        removeRuleButton.style.display = "none";
         document.body.appendChild(addRuleButton); // Move the button back to the body
       }
     });
@@ -437,8 +441,20 @@ else if(isHost) {
       const newRuleId = parseInt(newRuleInput.id.match(/\d+/)[0], 10) + 1;
       newRuleInput.id = `rule${newRuleId}`;
       newRuleInput.value = "";
-      ruleFieldsWrapper.insertBefore(newRuleField, addRuleButton);
+      // newRuleField.appendChild(removeRuleButton);
+      ruleFieldsWrapper.insertBefore(newRuleField,addRuleButton);
+      ruleFieldsWrapper.insertBefore(addRuleButton,removeRuleButton);
     });
+    
+    removeRuleButton.addEventListener("click", function() {
+      const ruleFields = document.querySelectorAll(".rule");
+
+      if(ruleFields.length > 1){
+        const lastRuleField = ruleFields[ruleFields.length - 1];
+        lastRuleField.parentNode.removeChild(lastRuleField);
+      }
+    });
+
     
 
   //-----------------adding event to database ------------------------//f
