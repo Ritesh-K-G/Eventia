@@ -415,7 +415,7 @@ else if(isHost) {
   
     //-------------------------  Rules  ----------------------------------//
     const ruleFieldsWrapper = document.getElementById("rule-fields-wrapper");
-    const addRuleButton = ruleFieldsWrapper.querySelector("#add-rule-btn");
+    const addRuleButton = ruleFieldsWrapper.querySelector("#add-rule-btn");  
     const optionsWrapper = document.querySelector(".options-wrapper");
     
     optionsWrapper.addEventListener("change", function(event) {
@@ -447,7 +447,7 @@ else if(isHost) {
     e.preventDefault();
 
     const naam = document.getElementById('naam').value;
-    const host = document.getElementById('hostname').value;
+    const host = auth.currentUser.uid;
     const description = document.getElementById('description').value;
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
@@ -496,7 +496,8 @@ else if(isHost) {
                     .then(() => {
                       console.log("Event profile image updated successfully!");
                       alert("Event added");
-                      navigate("../homepage/");
+                      // navigate("../homepage/");
+                      location.replace(/homepage/);
                     })
                     .catch((error) => {
                       console.error("Error updating event image:", error);
