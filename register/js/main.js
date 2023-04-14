@@ -145,3 +145,48 @@ jQuery(document).ready(function( $ ) {
 // custom code
 
 });
+
+
+function getTimeRemaining(endtime) {
+  let end= new Date(endtime);
+  let t = end.getTime() - Date.now();
+  let seconds = Math.floor((t / 1000) % 60);
+  let minutes = Math.floor((t / 1000 / 60) % 60);
+  let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+  let days = Math.floor(t / (1000 * 60 * 60 * 24));
+  return {
+    total: t,
+    days: days,
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds
+  };
+}
+
+function initializeClock(id, endtime,callback) {
+  let clock = document.getElementById(id);
+  let daysSpan = document.getElementById("days");
+  let hoursSpan = document.getElementById("hours");
+  let minutesSpan = document.getElementById("minutes");
+  let secondsSpan = document.getElementById("seconds");
+
+  function updateClock() {
+    let t = getTimeRemaining(endtime);
+
+    daysSpan.innerHTML = t.days;
+    hoursSpan.innerHTML = ("0" + t.hours).slice(-2);
+    minutesSpan.innerHTML = ("0" + t.minutes).slice(-2);
+    secondsSpan.innerHTML = ("0" + t.seconds).slice(-2);
+
+    if (t.total <= 0 && typeof callback === "function") {
+      callback();
+    }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock, 1000);
+}
+
+// const deadline = "December 31 2023";
+// initializeClock("countdown", 1682024220000);
+// console.log(deadline);
