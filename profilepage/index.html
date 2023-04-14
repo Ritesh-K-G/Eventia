@@ -47,9 +47,18 @@
     <!-- Sidenav -->
     <div class="sidenav">
         <div class="profile">
-            <img id="proimg" src="noimage.png" alt="" width="200" height="200">
-
+            <div class="profile-card__img">
+                <div class="profile-pic" >
+                  <label class="-label" for="file">
+                    <span class="glyphicon glyphicon-camera"></span>
+                    <span>Change Image</span>
+                  </label>
+                  <input id="file" type="file" onchange="loadFile(event)"/>
+                  <img src="noimage.png" id="output" width="200" />
+                </div>
+            </div>
             <div id="nameFront" class="name">
+                parth garg
             </div>
             <div id="description" class="job">
                 Web Developer
@@ -77,26 +86,26 @@
                     <tbody>
                         <tr>
                             <td >Name:</td>
-                            <td id="name">yuvraj</td>
+                            <td id="name"></td>
                         </tr>
                     
                         <tr>
                             <td >Email:</td>
-                            <td id="email">jindalyuvraj2@gmail.com</td>
+                            <td id="email"></td>
                         </tr>
                     
                         <tr>
                             <td >Phone:</td>
-                            <td id="phone" >6280147330</td>
+                            <td id="phone"></td>
                         </tr>
                     
                         <tr>
                             <td >DOB:</td>
-                            <td id="dob">29-08-2003</td>
+                            <td id="dob"></td>
                         </tr>
                     </tbody>
                 </table>
-                <a id = "done_b"class="edit_done">Done</a>
+                <a id = "done_b" class="edit_done">Done</a>
             </div>
         </div>
 
@@ -156,6 +165,7 @@
         const isloginpage=false;
         const isprofile=true;
         const isHost=false;
+        const isRegister = false;
       </script>
     <script type = "module" src="/firebase.js"></script>
     <script src = "script.js"></script>

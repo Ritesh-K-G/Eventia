@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
 import { getAuth, getRedirectResult, signInWithRedirect, GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -22,6 +22,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const firestore = getFirestore(app);
+const provider = new GoogleAuthProvider(app);
 let w,e,r,t,y;
 var q;
 
@@ -87,21 +88,42 @@ if(isloginpage) {
   googleSignupIcons.forEach((icon) => {
     icon.addEventListener('click', (e) => {
       signInWithPopup(auth, provider)
-        .then((result) => {
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          const user = result.user;
-          // console.log(result);
-          console.log(auth);
-          // location.replace("homepage/");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.customData.email;
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          alert(errorMessage);
-        });
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        const user = result.user;
+        const userid = user.uid;
+        const userRef = doc(db, 'users', userid);
+        
+        getDoc(userRef)
+          .then((doc) => {
+            if(doc.exists()) {
+              location.replace("homepage/");
+            } else {
+              // user is new, add user details to the firestore database
+              const userData = {
+                name: user.displayName,
+                email: user.email,
+                image: user.photoURL,
+                dob: "",
+                phone: "",
+                description: "",
+              };
+              setDoc(userRef, userData)
+                .then(() => {
+                  // user details added, go to homepage
+                  location.replace("homepage/");
+                })
+                .catch((err) => {
+                  alert(err);
+                });
+            }
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      })
+        
     });
   });
   
@@ -123,26 +145,26 @@ else if(ishomepage){
             // console.log(date);
             // console.log("hii"+start.toMillis());
             // console.log("hii"+end.toMillis());
-            // console.log(date >= start.toMillis() && date <= end.toMillis());
-            // if(date >= start && date <= end) {
-            //   const main = document.querySelector("#events-ongoing");
-            //   const card = document.createElement('div');
-            //   card.classList = 'swiper-slide';
-            //   const eventCard = `
-            //   <div class="card">
-            //   <div class="card_img">
-            //   <img src="${doc.data().photoURL}" alt="Card Image">
-            //   </div>
-            //   <div class="card-content">
-            //   <h2>${doc.data().name}</h2>
-            //   <p>${doc.data().description}</p>
-            //   <a class="readless" href="#">Details</a>
-            //   </div>
-            //   </div>
-            //   `;
-            //   card.innerHTML += eventCard;
-            //   main.appendChild(card);
-            // }
+            // console.log(date >= start && date <= end);
+            if(date >= start && date <= end) {
+              const main = document.querySelector("#events-ongoing");
+              const card = document.createElement('div');
+              card.classList = 'swiper-slide';
+              const eventCard = `
+              <div class="card">
+              <div class="card_img">
+              <img src="${doc.data().photoURL}" alt="Card Image">
+              </div>
+              <div class="card-content">
+              <h2>${doc.data().name}</h2>
+              <p>${doc.data().description}</p>
+              <a class="readless" href="#">Details</a>
+              </div>
+              </div>
+              `;
+              card.innerHTML += eventCard;
+              main.appendChild(card);
+            }
               
             //----------------- upcoming events details printing ------------------------//
             const upcomingMain = document.querySelector("#events-upcoming");
@@ -179,6 +201,64 @@ else if(ishomepage){
     auth.signOut();
     navigate("/");
   }
+
+  ///////////////////// SEARCH BOX /////////////////////////////////
+  // Get reference to search bar input and submit button
+  const searchInput = document.getElementById('searchQueryInput');
+  const searchButton = document.getElementById('searchQuerySubmit');
+
+  const dropdown = document.createElement('div');
+  dropdown.classList.add('searchResultsDropdown');
+  searchInput.parentNode.appendChild(dropdown);
+
+  searchButton.addEventListener('click', async () => {
+    const queryText = searchInput.value;
+    const q = query(collection(db, 'events'), where('name', '==', queryText));
+    const snapshot = await getDocs(q);
+
+    const matchingEvents = snapshot.docs.map(doc => ({
+      id: doc.id,
+      name: doc.data().name
+    }));
+    dropdown.innerHTML = '';
+
+    if (matchingEvents.length > 0) {
+      // Create dropdown item for each matching event
+      matchingEvents.forEach(event => {
+        const item = document.createElement('div');
+        item.textContent = event.name;
+        item.addEventListener('click', () => {
+          // Set search input value to selected event name
+          searchInput.value = event.name;
+          // Clear search results dropdown
+          dropdown.innerHTML = '';
+        });
+        dropdown.appendChild(item);
+      });
+
+      // Show search results dropdown
+      dropdown.style.display = 'block';
+    } else {
+      // Hide search results dropdown
+      dropdown.style.display = 'none';
+    }
+  });
+
+  // Add event listener for search input focus
+  searchInput.addEventListener('focus', () => {
+    // Hide search results dropdown
+    dropdown.style.display = 'none';
+  });
+
+  // Add event listener for search input blur
+  searchInput.addEventListener('blur', () => {
+    // Hide search results dropdown after a brief delay to allow time for a click on a dropdown item to register
+    setTimeout(() => {
+      dropdown.style.display = 'none';
+    }, 100);
+  });
+
+
 }
 else if(isRegister) {
   onAuthStateChanged(auth, (user) => {
@@ -220,83 +300,6 @@ else if(isRegister) {
 
 }
 else if(isprofile) {
-  //----------------- user id finding in profile ------------------------//
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const userid = user.uid;
-      const userRef = doc(db, 'users',userid);
-      getDoc(userRef)
-        .then((doc) => {
-          if(doc.exists()){
-            const data = doc.data();
-            // console.log(data);
-            // console.log(data.name);
-            var dateTimeDob = data.dob;
-            var date = dateTimeDob.toDate();
-            var day = date.getDate().toString().padStart(2, '0');
-            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // +1 because January is 0
-            var year = date.getFullYear().toString();
-            const finalDob= `${day}-${month}-${year}`;
-            // console.log(finalDob);
-            // console.log(data.dob);
-            document.getElementById("name").innerHTML= "Name: &emsp;&emsp;"+data.name;
-            document.getElementById("nameFront").innerHTML=data.name;
-            document.getElementById("dob").innerHTML="DOB: &emsp;&emsp;&emsp;"+finalDob;
-            document.getElementById("email").innerHTML="Email:  &nbsp;&emsp;&emsp;"+ data.email;
-            document.getElementById("phone").innerHTML="Contact: &emsp;"+data.phone;
-            document.getElementById("description").innerHTML=data.description;
-            document.getElementById("proimg").src = data.image;
-          }
-          else {
-            console.log("NO SUCH USER EXIST");
-          }
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    } 
-    else{
-      location.replace("../index.html");
-    }
-  });
-  
-  //----------------- user logout authentication ------------------------//
-  document.getElementById("ProfileLogout").onclick = function() {
-    auth.signOut();
-    navigate("../index.html");
-  }
-
-
-  //----------------update image-----------------------------------------//
-  const fileInput= document.getElementById("upload-button");
-  fileInput.addEventListener("change",(event)=>{
-    const file = event.target.files[0];
-    const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
-    const userDocRef = doc(firestore, "users", auth.currentUser.uid);
-    uploadBytes(storageRef, file).then(() => {
-      // console.log("File uploaded successfully!");
-      getDownloadURL(storageRef).then((url) => {
-        // console.log("File download URL:", url);
-        updateDoc(userDocRef, {
-          image: url
-        }).then(() => {
-          // console.log("User profile image updated successfully!");
-          location.reload();
-        }).catch((error) => {
-          // console.error("Error updating user image:", error);
-          alert(error.message);
-        });
-      }).catch((error) => {
-        // console.error("Error getting file download URL:", error);
-        alert(error.message);
-      });
-    }).catch((error) => {
-      // console.error("Error uploading file:", error);
-      alert(error.message);
-    });
-  });
-}
-else if(isProfileUpdate) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const userid = user.uid;
@@ -311,7 +314,7 @@ else if(isProfileUpdate) {
             document.getElementById("email").innerHTML=data.email;
             document.getElementById("phone").innerHTML=data.phone;
             document.getElementById("description").innerHTML=data.description;
-            document.getElementById("proimg").src = data.image;
+            document.getElementById("output").src = data.image;
           }
         })
         .catch((err) => {
@@ -323,19 +326,17 @@ else if(isProfileUpdate) {
     }
   });
 
-  document.getElementById("ProfileLogout").onclick = function() {
-    auth.signOut();
-    navigate("../index.html");
-  }
-
-  const profileUpdate= document.querySelector('.profile-update-form')
-  profileUpdate.addEventListener('submit',(e)=>{
-    e.preventDefault()
-    const naam = document.getElementById('naam').value;
-    const phn = document.getElementById('phn').value;
-    const dob = document.getElementById('dob').value;
-    const desc = document.getElementById('description').value;
-    if(naam=="" || phn=="" || !dob){
+  // document.getElementById("ProfileLogout").onclick = function() {
+  //   auth.signOut();
+  //   navigate("../index.html");
+  // }
+  
+  document.getElementById("done_b").addEventListener('click',()=>{
+    const naam = document.getElementById('name').textContent;
+    const phn = document.getElementById('phone').textContent;
+    const dob = document.getElementById('dob').textContent;
+    const desc = document.getElementById('description').textContent;
+    if(naam=="" || phn=="" || dob==""){
       alert("Enter All Fields");
     }
     else{
@@ -347,7 +348,7 @@ else if(isProfileUpdate) {
         description: desc,
       })
         .then(()=> {
-          alert("Profile updated successfully");
+          // alert("Profile updated successfully");
         })
         .catch(()=> {
           alert("Profile can't be updated");
@@ -355,7 +356,31 @@ else if(isProfileUpdate) {
     }
   })
 
-  const fileInput= document.getElementById("upload-button");
+  // const fileInput= document.getElementById("upload-button");
+  // fileInput.addEventListener("change",(event)=>{
+  //   const file = event.target.files[0];
+  //   const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
+  //   const userDocRef = doc(firestore, "users", auth.currentUser.uid);
+  //   uploadBytes(storageRef, file).then(() => {
+  //     getDownloadURL(storageRef).then((url) => {
+  //       updateDoc(userDocRef, {
+  //         image: url
+  //       }).then(() => {
+  //         location.reload();
+  //       }).catch((error) => {
+  //         alert(error.message);
+  //       });
+  //     }).catch((error) => {
+  //       alert(error.message);
+  //     });
+  //   }).catch((error) => {
+  //     alert(error.message);
+  //   });
+  // });
+
+    //----------------update image-----------------------------------------//
+  
+  const fileInput= document.getElementById("file");
   fileInput.addEventListener("change",(event)=>{
     const file = event.target.files[0];
     const storageRef = ref(storage,`pic/${auth.currentUser.uid}/profile-image`);
@@ -388,16 +413,49 @@ else if(isHost) {
     }
   });
   
+    //-------------------------  Rules  ----------------------------------//
+    const ruleFieldsWrapper = document.getElementById("rule-fields-wrapper");
+    const addRuleButton = ruleFieldsWrapper.querySelector("#add-rule-btn");
+    const optionsWrapper = document.querySelector(".options-wrapper");
+    
+    optionsWrapper.addEventListener("change", function(event) {
+      if (event.target.value === "yes") {
+        ruleFieldsWrapper.style.display = "block";
+        addRuleButton.style.display = "block";
+        ruleFieldsWrapper.appendChild(addRuleButton); // Append the button to the wrapper
+      } else {
+        ruleFieldsWrapper.style.display = "none";
+        addRuleButton.style.display = "none";
+        document.body.appendChild(addRuleButton); // Move the button back to the body
+      }
+    });
+    
+    addRuleButton.addEventListener("click", function() {
+      const ruleFields = document.querySelectorAll(".rule");
+      const newRuleField = ruleFields[ruleFields.length - 1].cloneNode(true);
+      const newRuleInput = newRuleField.querySelector("input");
+      const newRuleId = parseInt(newRuleInput.id.match(/\d+/)[0], 10) + 1;
+      newRuleInput.id = `rule${newRuleId}`;
+      newRuleInput.value = "";
+      ruleFieldsWrapper.insertBefore(newRuleField, addRuleButton);
+    });
+    
+
   //-----------------adding event to database ------------------------//f
   const eventupform= document.querySelector('.event-upload-form')
   eventupform.addEventListener('submit',(e)=>{
     e.preventDefault();
 
     const naam = document.getElementById('naam').value;
-    const host = auth.currentUser.uid;
+    const host = document.getElementById('hostname').value;
     const description = document.getElementById('description').value;
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
+    const rulesInputs = document.querySelectorAll("input[name='rules[]']");
+    const rules = [];
+    for (let i = 0; i < rulesInputs.length; i++) {
+      rules.push(rulesInputs[i].value);
+    }
     if(naam=="" || description=="" || !startTime || !endTime) {
       alert("Enter All Fields");
     }
@@ -419,6 +477,7 @@ else if(isHost) {
         description: description,
         start: Stimestamp,
         end: Etimestamp,
+        rules: rules
       })
       .then((eventRef) => {
           const eventId = eventRef.id;
@@ -437,7 +496,7 @@ else if(isHost) {
                     .then(() => {
                       console.log("Event profile image updated successfully!");
                       alert("Event added");
-                      location.replace("../homepage/");
+                      navigate("../homepage/");
                     })
                     .catch((error) => {
                       console.error("Error updating event image:", error);
@@ -459,4 +518,21 @@ else if(isHost) {
         })
     }
   })
+
+
+  // const form = document.getElementById("arehogaya");
+  // form.addEventListener("click", function(event) {
+  //   event.preventDefault(); // prevent the form from submitting
+  
+  //   const rulesInputs = document.querySelectorAll("input[name='rules[]']");
+  //   const rules = [];
+  
+  //   for (let i = 0; i < rulesInputs.length; i++) {
+  //     rules.push(rulesInputs[i].value);
+  //   }
+  
+  //   console.log(rules);
+  //   // You can now use the `rules` array to store the rules in the Firebase database
+  // })
+
 }
