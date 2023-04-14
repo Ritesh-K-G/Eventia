@@ -184,7 +184,7 @@ else if(ishomepage){
             viewMoreButton.addEventListener('click', () => {
               localStorage.setItem("r",doc.id);
               console.log(localStorage.getItem("r"));
-              window.location.replace("../register/");
+              location.replace("../register/index.html");
             });
           })
         })
@@ -390,19 +390,15 @@ else if(isprofile) {
                     upcomingCard.classList = 'card2';
                     const content = `
                     <div class="card_img">
-                        <img src="https://static.wikia.nocookie.net/smurfsfanon/images/3/30/LD_Generic_Smurf_Profile.png/revision/latest/scale-to-width-down/190?cb=20200911190804"
-                            alt="">
+                        <img src="${dok.data().photoURL}" alt="event-img">
                     </div>
-
                     <div class="top-text">
-                        <div class="name">Annie lea</div>
-                        <p>Apps Developer</p>
+                        <div class="name">${dok.data().name}</div>
+                        <p>${dok.data().tagline}</p>
                     </div>
 
                     <div class="bottom-text">
-                        <div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quas quaerat
-                            sapiente ea. Illum laudantium quidem adipisci sed facere quibusdam quisquam excepturi
-                            molestias. Ut, dolor? Minima culpa officiis necessitatibus aspernatur.</div>
+                        <div class="text">${dok.data().description}</div>
                         <div class="btn">
                             <a href="#">Read more</a>
                         </div>
@@ -411,14 +407,44 @@ else if(isprofile) {
                     upcomingCard.innerHTML += content;
                     parentDiv.appendChild(upcomingCard);
                     //------------------------ Adding functionality to the button ------------------------//
-                    // const viewMoreButton = upcomingCard.querySelector('.button');
-                    // viewMoreButton.addEventListener('click', () => {
-                    //   localStorage.setItem("r",doc.id);
-                    //   console.log(localStorage.getItem("r"));
-                    //   window.location.replace("../register/");
-                    // });
+                    const viewMoreButton = upcomingCard.querySelector('.btn');
+                    viewMoreButton.addEventListener('click', () => {
+                      localStorage.setItem("r",dok.id);
+                      console.log(localStorage.getItem("r"));
+                      window.location.replace("../register/");
+                    });
                   }
                 })
+                if(dok.data().host == auth.currentUser.uid) {
+                  const parentDiv = document.querySelector("#hosted");
+                  const upcomingCard = document.createElement('div');
+                  upcomingCard.classList = 'card2';
+                  const content = `
+                    <div class="card_img">
+                        <img src="${dok.data().photoURL}" alt="event-img">
+                    </div>
+                    <div class="top-text">
+                        <div class="name">${dok.data().name}</div>
+                        <p>${dok.data().tagline}</p>
+                    </div>
+
+                    <div class="bottom-text">
+                        <div class="text">${dok.data().description}</div>
+                        <div class="btn">
+                            <a href="#">Read more</a>
+                        </div>
+                    </div>
+                  `;
+                  upcomingCard.innerHTML += content;
+                  parentDiv.appendChild(upcomingCard);
+                  //------------------------ Adding functionality to the button ------------------------//
+                  const viewMoreButton = upcomingCard.querySelector('.btn');
+                  viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",dok.id);
+                    console.log(localStorage.getItem("r"));
+                    window.location.replace("../register/");
+                  });
+                }
             })
           })
           .catch(()=> {
