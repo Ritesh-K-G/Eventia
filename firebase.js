@@ -299,13 +299,37 @@ else if(isRegister) {
           document.getElementById("tagline").innerHTML = w.tagline;
           document.getElementById("description").innerHTML = w.description;
           document.getElementById("type").innerHTML = w.type;
-          document.getElementById("Stime").innerHTML = w.start;
-          document.getElementById("Etime").innerHTML = w.end;
           document.getElementById("EveImg").src = w.photoURL;
           document.getElementById("eventCardName").innerHTML = w.name;
           document.getElementById("CardTag").innerHTML = w.tagline;
           document.getElementById("CardType").innerHTML = w.type;
+          
+          let timestamp1 = w.start;
+          let date1 = new Date(timestamp1);
+          let year1 = date1.getFullYear();
+          let month1 = date1.getMonth() + 1;
+          let day1 = date1.getDate();
+          // let hours1 = date1.getHours();
+          // let minutes1 = date1.getMinutes();
+          // let seconds1 = date1.getSeconds();
+          document.getElementById('Stime').innerHTML= day1+"/"+month1+"/"+year1;
+          let timestamp2 = w.end;
+          let date2 = new Date(timestamp1);
+          let year2 = date2.getFullYear();
+          let month2 = date2.getMonth() + 1;
+          let day2 = date2.getDate();
+          // let hours2 = date2.getHours();
+          // let minutes2 = date2.getMinutes();
+          // let seconds2 = date2.getSeconds();
+          document.getElementById('Etime').innerHTML= day2+"/"+month2+"/"+year2;
 
+          var endTime= w.end;
+          if(endTime - Date.parse(new Date())>0){
+            document.querySelector(".countdown-container").style.display= "block";
+            initializeClock("countdown", endTime,function(){
+              document.querySelector(".countdown-container").style.display = "none";
+            });
+          }
 
           //----------------- Print the rules ------------------------//
           var myArray = w.rules;
