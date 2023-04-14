@@ -184,7 +184,7 @@ else if(ishomepage){
             viewMoreButton.addEventListener('click', () => {
               localStorage.setItem("r",doc.id);
               console.log(localStorage.getItem("r"));
-              window.location.replace("../register/");
+              location.replace("../register/index.html");
             });
           })
         })
@@ -398,16 +398,92 @@ else if(isprofile) {
         .catch((err) => {
           alert("select query error");
         });
+
+        //----------------- Events details printing ------------------------//
+        const eventdb = collection(db, 'events');
+        getDocs(eventdb)
+          .then((snapshot) => {
+            snapshot.docs.forEach((dok) => {
+              const x=dok.id;
+              const attendeesRef = doc(db, 'attendees', x);
+              getDoc(attendeesRef)
+                .then((list)=> {
+                  if(list.data().attendee !== undefined && list.data().attendee.includes(auth.currentUser.uid)) {
+                    const parentDiv = document.querySelector("#attended");
+                    const upcomingCard = document.createElement('div');
+                    upcomingCard.classList = 'card2';
+                    const content = `
+                    <div class="card_img">
+                        <img src="${dok.data().photoURL}" alt="event-img">
+                    </div>
+                    <div class="top-text">
+                        <div class="name">${dok.data().name}</div>
+                        <p>${dok.data().tagline}</p>
+                    </div>
+
+                    <div class="bottom-text">
+                        <div class="text">${dok.data().description}</div>
+                        <div class="btn">
+                            <a href="#">Read more</a>
+                        </div>
+                    </div>
+                    `;
+                    upcomingCard.innerHTML += content;
+                    parentDiv.appendChild(upcomingCard);
+                    //------------------------ Adding functionality to the button ------------------------//
+                    const viewMoreButton = upcomingCard.querySelector('.btn');
+                    viewMoreButton.addEventListener('click', () => {
+                      localStorage.setItem("r",dok.id);
+                      console.log(localStorage.getItem("r"));
+                      window.location.replace("../register/");
+                    });
+                  }
+                })
+                if(dok.data().host == auth.currentUser.uid) {
+                  const parentDiv = document.querySelector("#hosted");
+                  const upcomingCard = document.createElement('div');
+                  upcomingCard.classList = 'card2';
+                  const content = `
+                    <div class="card_img">
+                        <img src="${dok.data().photoURL}" alt="event-img">
+                    </div>
+                    <div class="top-text">
+                        <div class="name">${dok.data().name}</div>
+                        <p>${dok.data().tagline}</p>
+                    </div>
+
+                    <div class="bottom-text">
+                        <div class="text">${dok.data().description}</div>
+                        <div class="btn">
+                            <a href="#">Read more</a>
+                        </div>
+                    </div>
+                  `;
+                  upcomingCard.innerHTML += content;
+                  parentDiv.appendChild(upcomingCard);
+                  //------------------------ Adding functionality to the button ------------------------//
+                  const viewMoreButton = upcomingCard.querySelector('.btn');
+                  viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",dok.id);
+                    console.log(localStorage.getItem("r"));
+                    window.location.replace("../register/");
+                  });
+                }
+            })
+          })
+          .catch(()=> {
+            console.log("Cannot fetch event details");
+          })
     }
     else{
       location.replace("../index.html");
     }
   });
 
-  // document.getElementById("ProfileLogout").onclick = function() {
-  //   auth.signOut();
-  //   navigate("../index.html");
-  // }
+  document.getElementById("ProfileLogout").onclick = function() {
+    auth.signOut();
+    navigate("../index.html");
+  }
   
   document.getElementById("done_b").addEventListener('click',()=>{
     const naam = document.getElementById('name').textContent;
