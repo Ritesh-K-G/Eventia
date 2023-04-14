@@ -132,32 +132,28 @@ else if(ishomepage){
   onAuthStateChanged(auth, (user) => {
     //----------------- session implementation ------------------------//
     if (user) {
-      //----------------- ongoing events details printing ------------------------//
       const eventdb = collection(db, 'events');
       getDocs(eventdb)
       .then((snapshot) => {
         snapshot.docs.forEach((doc) => {
+            //----------------- ongoing events details printing ------------------------//
             var date = Date.now();
             var start = doc.data().start; 
             var end = doc.data().end;
-            // console.log(date);
-            // console.log("hii"+start.toMillis());
-            // console.log("hii"+end.toMillis());
-            // console.log(date >= start && date <= end);
             if(date >= start && date <= end) {
               const main = document.querySelector("#events-ongoing");
               const card = document.createElement('div');
               card.classList = 'swiper-slide';
               const eventCard = `
               <div class="card">
-              <div class="card_img">
-              <img src="${doc.data().photoURL}" alt="Card Image">
-              </div>
-              <div class="card-content">
-              <h2>${doc.data().name}</h2>
-              <p>${doc.data().description}</p>
-              <a class="readless" href="#">Details</a>
-              </div>
+                <div class="card_img">
+                  <img src="${doc.data().photoURL}" alt="Card Image">
+                </div>
+                <div class="card-content">
+                  <h2>${doc.data().name}</h2>
+                  <p>${doc.data().description}</p>
+                  <a class="readless" href="#">Details</a>
+                </div>
               </div>
               `;
               card.innerHTML += eventCard;
@@ -165,27 +161,59 @@ else if(ishomepage){
             }
               
             //----------------- upcoming events details printing ------------------------//
-            const upcomingMain = document.querySelector("#events-upcoming");
-            const upcomingCard = document.createElement('div');
-            upcomingCard.classList = 'swiper-slide';
-            const eventupcomingCard = `
-              <div class="card1">
-                <img class = "img1" src = "${doc.data().photoURL}" alt="Card Image">
-              </div>
-              <div class="card-content1">
-                <h2 class="name">${doc.data().name}</h2>
-                <p class="description">${doc.data().description}</p>
-                <button class="button">View More</button>
-              </div>
-            `;
-            upcomingCard.innerHTML += eventupcomingCard;
-            upcomingMain.appendChild(upcomingCard);
-            const viewMoreButton = upcomingCard.querySelector('.button');
-            viewMoreButton.addEventListener('click', () => {
-              localStorage.setItem("r",doc.id);
-              console.log(localStorage.getItem("r"));
-              location.replace("../register/index.html");
-            });
+            else if(date < start) {
+
+              const upcomingMain = document.querySelector("#d-1");
+              const upcomingCard = document.createElement('div');
+              upcomingCard.classList = 'row schedule-item';
+              const eventupcomingCard = `
+              <div class="col-md-2"><time>${doc.data().start}</time></div>
+              <div class="col-md-10">
+                <div class="speaker">
+                  <img src="${doc.data().photoURL}" alt="Brenden Legros" />
+                </div>
+                <h4>${doc.data().name} <br><span>${doc.data().tagline}</span></h4>
+                <p>${doc.data().description}</p>
+                <br />
+                <button type="button" id="eveDetails" class="btn btn-primary">Details</button>
+                </div>
+                `;
+                upcomingCard.innerHTML += eventupcomingCard;
+                upcomingMain.appendChild(upcomingCard);
+                const viewMoreButton = upcomingCard.querySelector('#eveDetails');
+                viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",doc.id);
+                    console.log(localStorage.getItem("r"));
+                    window.location.href = "../register/index.html";
+                });
+             }
+
+             //----------------- past events details printing ------------------------//
+             else {
+              const upcomingMain = document.querySelector("#d-2");
+              const upcomingCard = document.createElement('div');
+              upcomingCard.classList = 'row schedule-item';
+              const eventupcomingCard = `
+              <div class="col-md-2"><time>${doc.data().start}</time></div>
+              <div class="col-md-10">
+                <div class="speaker">
+                  <img src="${doc.data().photoURL}" alt="Brenden Legros" />
+                </div>
+                <h4>${doc.data().name} <br><span>${doc.data().tagline}</span></h4>
+                <p>${doc.data().description}</p>
+                <br />
+                <button type="button" id="eveDetails" class="btn btn-primary">Details</button>
+                </div>
+                `;
+                upcomingCard.innerHTML += eventupcomingCard;
+                upcomingMain.appendChild(upcomingCard);
+                const viewMoreButton = upcomingCard.querySelector('#eveDetails');
+                viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",doc.id);
+                    console.log(localStorage.getItem("r"));
+                    window.location.href = "../register/index.html";
+                });
+             }
           })
         })
     }
