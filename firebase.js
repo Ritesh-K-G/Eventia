@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
 import { getAuth, getRedirectResult, signInWithRedirect, GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, arrayRemove, arrayUnion } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -23,8 +23,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const firestore = getFirestore(app);
 const provider = new GoogleAuthProvider(app);
-let w,e,r,t,y;
-var q;
 
 //----------------- Different pages js functions ------------------------//
 if(isloginpage) {
@@ -263,40 +261,92 @@ else if(ishomepage){
 else if(isRegister) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(localStorage.getItem("r"));
-      let q=localStorage.getItem("r");
+      const q=localStorage.getItem("r");
       let eventRef = doc(db, 'events', q);
       getDoc(eventRef)
-        .then((doc) => {
-          w=doc.data();
-          document.getElementById("title").innerHTML = w.name;
+        .then((documen) => {
+          let w=documen.data();
+          //----------------- Print event details ------------------------//
+          document.getElementById("eventName").innerHTML = w.name;
+          document.getElementById("tagline").innerHTML = w.tagline;
           document.getElementById("description").innerHTML = w.description;
-          document.getElementById("img").src = w.photoURL;
+          document.getElementById("type").innerHTML = w.type;
+          document.getElementById("Stime").innerHTML = w.start;
+          document.getElementById("Etime").innerHTML = w.end;
+          document.getElementById("EveImg").src = w.photoURL;
+          document.getElementById("eventCardName").innerHTML = w.name;
+          document.getElementById("CardTag").innerHTML = w.tagline;
+          document.getElementById("CardType").innerHTML = w.type;
+
+
+          //----------------- Print the rules ------------------------//
+          var myArray = w.rules;
+          myArray.forEach(function(element) {
+            // console.log(element);
+            const ruleDiv = document.querySelector("#rule-list");
+            let li = document.createElement("li");
+            let a = document.createElement("a");
+            a.appendChild(document.createTextNode(element))
+            // let icon = document.createElement("i");
+            // icon.classList.add("fa", "fa-light", "fa-bullhorn");
+            li.appendChild(a);
+            // li.appendChild(icon)
+            ruleDiv.appendChild(li);
+          });
+
+          //----------------- Cancel and register for event ------------------------//
+            var eventAttendeesRef=doc(db,'attendees',q);
+            var userID=auth.currentUser.uid;
+            getDoc(eventAttendeesRef)
+            .then((dok) => {
+              if(dok.data().attendee.includes(userID)) {
+                document.getElementById('msg').style.display = 'block';
+                document.getElementById('register').style.display = 'none';
+                document.getElementById("canBTN").addEventListener('click', () => {
+                    updateDoc(eventAttendeesRef, {
+                      attendee: arrayRemove(userID)
+                    })
+                      .then(()=>{
+                        console.log("Successfully cancelled");
+                        location.reload();
+                      })
+                      .catch(()=> {
+                        console.log("Cannot be cancelled");
+                      })
+                  })
+              }
+              else {
+                document.getElementById('msg').style.display = 'none';
+                document.getElementById('register').style.display = 'block';
+                document.getElementById("regBTN").addEventListener('click', () => {
+                  updateDoc(eventAttendeesRef, {
+                    attendee: arrayUnion(userID)
+                  })
+                  .then(()=>{
+                    console.log("Successfully registered");
+                    location.reload();
+                  })
+                  .catch(()=> {
+                    console.log("Cannot be registered");
+                  })
+                })
+              }
+            })
+            .catch(()=> {
+              console.log("cancelled3");
+            })
+
+
         })
         .catch((err)=> {
-          // alert(err);
-          // alert("Error in fetching event details");
+          console.log(err);
+          console.log("Cannot get event details");
         })
     }
     else{
       location.replace("../index.html");
     }
   });
-  document.getElementById("reg").addEventListener('click', function() {
-    const attendeeRef = collection(db, "attendees");
-    const host = auth.currentUser.uid;
-    let eveID=localStorage.getItem("r");
-    addDoc(attendeeRef, {
-      attendee: host,
-      event: eveID,
-    })
-      .then(()=> {
-        alert("Successfully registered for the event");
-      })
-      .catch(()=>{
-        alert("Error in registration");
-      })
-  })
 
 }
 else if(isprofile) {
