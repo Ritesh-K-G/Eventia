@@ -12,10 +12,10 @@ const noRadio = document.querySelector('input[value="no"]');
     eventImg=event.target.files[0];
   }
   
-yesRadio.addEventListener("click", function() {
-  textarea.style.display = "block";
-});
+// yesRadio.addEventListener("click", function() {
+//   textarea.style.display = "block";
+// });
 
-noRadio.addEventListener("click", function() {
-  textarea.style.display = "none";
-});
+// noRadio.addEventListener("click", function() {
+//   textarea.style.display = "none";
+// });

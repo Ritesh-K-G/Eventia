@@ -463,16 +463,49 @@ else if(isHost) {
     }
   });
   
+    //-------------------------  Rules  ----------------------------------//
+    const ruleFieldsWrapper = document.getElementById("rule-fields-wrapper");
+    const addRuleButton = ruleFieldsWrapper.querySelector("#add-rule-btn");
+    const optionsWrapper = document.querySelector(".options-wrapper");
+    
+    optionsWrapper.addEventListener("change", function(event) {
+      if (event.target.value === "yes") {
+        ruleFieldsWrapper.style.display = "block";
+        addRuleButton.style.display = "block";
+        ruleFieldsWrapper.appendChild(addRuleButton); // Append the button to the wrapper
+      } else {
+        ruleFieldsWrapper.style.display = "none";
+        addRuleButton.style.display = "none";
+        document.body.appendChild(addRuleButton); // Move the button back to the body
+      }
+    });
+    
+    addRuleButton.addEventListener("click", function() {
+      const ruleFields = document.querySelectorAll(".rule");
+      const newRuleField = ruleFields[ruleFields.length - 1].cloneNode(true);
+      const newRuleInput = newRuleField.querySelector("input");
+      const newRuleId = parseInt(newRuleInput.id.match(/\d+/)[0], 10) + 1;
+      newRuleInput.id = `rule${newRuleId}`;
+      newRuleInput.value = "";
+      ruleFieldsWrapper.insertBefore(newRuleField, addRuleButton);
+    });
+    
+
   //-----------------adding event to database ------------------------//f
   const eventupform= document.querySelector('.event-upload-form')
   eventupform.addEventListener('submit',(e)=>{
     e.preventDefault();
 
     const naam = document.getElementById('naam').value;
-    const host = auth.currentUser.uid;
+    const host = document.getElementById('hostname').value;
     const description = document.getElementById('description').value;
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
+    const rulesInputs = document.querySelectorAll("input[name='rules[]']");
+    const rules = [];
+    for (let i = 0; i < rulesInputs.length; i++) {
+      rules.push(rulesInputs[i].value);
+    }
     if(naam=="" || description=="" || !startTime || !endTime) {
       alert("Enter All Fields");
     }
@@ -494,6 +527,7 @@ else if(isHost) {
         description: description,
         start: Stimestamp,
         end: Etimestamp,
+        rules: rules
       })
       .then((eventRef) => {
           const eventId = eventRef.id;
@@ -534,4 +568,21 @@ else if(isHost) {
         })
     }
   })
+
+
+  // const form = document.getElementById("arehogaya");
+  // form.addEventListener("click", function(event) {
+  //   event.preventDefault(); // prevent the form from submitting
+  
+  //   const rulesInputs = document.querySelectorAll("input[name='rules[]']");
+  //   const rules = [];
+  
+  //   for (let i = 0; i < rulesInputs.length; i++) {
+  //     rules.push(rulesInputs[i].value);
+  //   }
+  
+  //   console.log(rules);
+  //   // You can now use the `rules` array to store the rules in the Firebase database
+  // })
+
 }
