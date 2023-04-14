@@ -302,6 +302,8 @@ else if(isRegister) {
               if(dok.data().attendee.includes(userID)) {
                 document.getElementById('msg').style.display = 'block';
                 document.getElementById('register').style.display = 'none';
+                document.getElementById('btn1').style.display = 'none';
+                document.getElementById('btn2').style.display = 'block';
                 document.getElementById("canBTN").addEventListener('click', () => {
                     updateDoc(eventAttendeesRef, {
                       attendee: arrayRemove(userID)
@@ -318,6 +320,8 @@ else if(isRegister) {
               else {
                 document.getElementById('msg').style.display = 'none';
                 document.getElementById('register').style.display = 'block';
+                document.getElementById('btn1').style.display = 'block';
+                document.getElementById('btn2').style.display = 'none';
                 document.getElementById("regBTN").addEventListener('click', () => {
                   updateDoc(eventAttendeesRef, {
                     attendee: arrayUnion(userID)

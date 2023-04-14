@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>TheEvent - Bootstrap Event Template</title>
+  <title>Event details</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- Favicons -->
-  <link href="img/favicon.png" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+  <!-- <link href="img/favicon.png" rel="icon">
+  <link href="img/apple-touch-icon.png" rel="apple-touch-icon"> -->
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800"
@@ -51,7 +51,8 @@
       <div id="logo" class="pull-left">
         <!-- Uncomment below if you prefer to use a text logo -->
         <!-- <h1><a href="#main">C<span>o</span>nf</a></h1>-->
-        <a href="#intro" class="scrollto"><img src="img/logo.png" alt="" title=""></a>
+        <!-- <a href="#intro" class="scrollto"><img src="img/logo.png" alt="" title=""></a> -->
+        <a href="#"><img src="../img/Cisco-logo.png" alt="" title=""></a>
       </div>
 
       <nav id="nav-menu-container">
@@ -63,7 +64,8 @@
           <li><a href="#rules">Rules</a></li>
           <li><a href="#supporters">Sponsors</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li class="buy-tickets"><a href="#buy-tickets">Buy Tickets</a></li>
+          <li id="btn1" class="buy-tickets"><a href="#RegisterOrMsg">Buy Tickets</a></li>
+          <li id="btn2" class="cancel-tickets"><a href="#RegisterOrMsg">Cancel Ticket</a></li>
         </ul>
       </nav><!-- #nav-menu-container -->
     </div>
@@ -333,15 +335,22 @@
 
     </section>
 
-    <div id="RegisterOrMsg" style="text-align: center;">
-      <div id="register">Click! to register for the event<br>
-        <button id="regBTN" class="btn btn-outline-success">Register</button>
-        <hr>
-      </div>
-      <div id="msg">You have succesfully Registered for this event<br>
-        <button id="canBTN" class="btn btn-outline-danger">Cancel Registeration</button>
-        <hr>
-      </div>
+    <div id="RegisterOrMsg" style="text-align: center; align-items: center; justify-content: center;">
+        <div class="card" style="text-align: center; align-items: center;">
+          <div id="register">
+            <img src="https://media.tenor.com/tKe_PFkn6mMAAAAC/clickhere-click.gif" alt="Card Image" style="max-height: 250px; max-width: 250px; justify-content: center;">
+            <br>Click! to register for the event<br>
+            <button id="regBTN" class="btn btn-outline-success">Register</button>
+            <hr>
+          </div>
+          <div id="msg">
+            <br>You have succesfully Registered for this event<br>
+            <button id="canBTN" class="btn btn-outline-danger">Cancel Registeration</button>
+            <br>
+            <img src="https://i.pinimg.com/originals/8b/c8/25/8bc82544ef312c696b66dac6ea3c957d.gif" alt="Card Image" style="max-height: 250px; max-width: 250px; justify-content: center;">
+            <hr>
+          </div>
+        </div>
     </div>
 
     <!--==========================
