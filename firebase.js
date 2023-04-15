@@ -234,7 +234,7 @@ else if(ishomepage){
             getDoc(eventRef)
             .then((docu) => {
               const content = `
-              There has been an update in <a id="eveDetail">${docu.data().name}</a>
+              <a id="eveDetail">There has been an update in ${docu.data().name}</a>
               `;
               card.innerHTML += content;
               main.appendChild(card);
@@ -244,7 +244,13 @@ else if(ishomepage){
                     console.log(localStorage.getItem("r"));
                     const del = doc(db, "notification", dok.id);
                     deleteDoc(del)
-                    window.location.href = "../register/index.html";
+                      .then(()=>{
+                        console.log("deleted");
+                        window.location.href = "../register/index.html";
+                      })
+                      .catch((e)=>{
+                        console.log(e);
+                      })
                 });
             })
           }
