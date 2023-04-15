@@ -224,19 +224,24 @@ else if(ishomepage){
     const notifydb = collection(db, 'notification');
       getDocs(notifydb)
       .then((snapshot) => {
+        let i=0;
         snapshot.docs.forEach((dok) => {
-          const main = document.querySelector("#my_notification");
-              const card = document.createElement('li');
-              const eventRef = doc(db, 'events',dok.data().event);
-              getDoc(eventRef)
-              .then((doc) => {
-                const content = `
-                  There has been an update in ${doc.data().name}
-                `;
-                card.innerHTML += content;
-                main.appendChild(card);
-              })
+          if(dok.data().user==auth.currentUser.uid) {
+            i++;
+            const main = document.querySelector("#my_notification");
+            const card = document.createElement('li');
+            const eventRef = doc(db, 'events',dok.data().event);
+            getDoc(eventRef)
+            .then((doc) => {
+              const content = `
+              There has been an update in ${doc.data().name}
+              `;
+              card.innerHTML += content;
+              main.appendChild(card);
+            })
+          }
         })
+        document.getElementById('count').innerHTML=i;
       })
 
   });
