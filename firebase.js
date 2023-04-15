@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
 import { getAuth, getRedirectResult, signInWithRedirect, GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, arrayRemove, arrayUnion } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, arrayRemove, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -232,16 +232,33 @@ else if(ishomepage){
             const card = document.createElement('li');
             const eventRef = doc(db, 'events',dok.data().event);
             getDoc(eventRef)
-            .then((doc) => {
+            .then((docu) => {
               const content = `
-              There has been an update in ${doc.data().name}
+              There has been an update in <a id="eveDetail">${docu.data().name}</a>
               `;
               card.innerHTML += content;
               main.appendChild(card);
+              const viewMoreButton = card.querySelector('#eveDetail');
+                viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",docu.id);
+                    console.log(localStorage.getItem("r"));
+                    const del = doc(db, "notification", dok.id);
+                    deleteDoc(del)
+                    window.location.href = "../register/index.html";
+                });
             })
           }
         })
         document.getElementById('count').innerHTML=i;
+        if(i==0) {
+          const main = document.querySelector("#my_notification");
+          const card = document.createElement('li');
+          const content = `
+            NO NOTIFICATION
+          `;
+          card.innerHTML += content;
+          main.appendChild(card);
+        }
       })
 
   });
