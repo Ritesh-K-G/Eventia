@@ -220,6 +220,25 @@ else if(ishomepage){
     else{
       location.replace("../index.html");
     }
+
+    const notifydb = collection(db, 'notification');
+      getDocs(notifydb)
+      .then((snapshot) => {
+        snapshot.docs.forEach((dok) => {
+          const main = document.querySelector("#my_notification");
+              const card = document.createElement('li');
+              const eventRef = doc(db, 'events',dok.data().event);
+              getDoc(eventRef)
+              .then((doc) => {
+                const content = `
+                  There has been an update in ${doc.data().name}
+                `;
+                card.innerHTML += content;
+                main.appendChild(card);
+              })
+        })
+      })
+
   });
 
   //----------------- user logout authentication ------------------------//
@@ -404,6 +423,72 @@ else if(isRegister) {
     }
   });
 
+}
+else if(isUpdateEvent) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const q=localStorage.getItem("r");
+      let eventRef = doc(db, 'events', q);
+      getDoc(eventRef)
+        .then((documen) => {
+          let w=documen.data();
+          //----------------- Print event details ------------------------//
+          document.getElementById("naam").value = w.name;
+          document.getElementById("joininglink").value = w.link;
+          document.getElementById("tagline").value = w.tagline;
+          // const x = w.start;
+          // const y = w.end;
+          // const sDateTime = x.toISOString().slice(0, 16);
+          // const eDateTime = y.toISOString().slice(0, 16);
+          // document.getElementById("startTime").value = w.sDateTime;
+          // document.getElementById("endTime").value = w.eDateTime;
+          document.getElementById("type").value = w.type;
+          document.getElementById("description").value = w.description;
+          // document.getElementById("EveImg").src = w.photoURL;
+        })
+    } 
+    else{
+      location.replace("../index.html");
+    }
+  });
+
+  document.querySelector('.event-upload-form').addEventListener('submit', (e)=>{
+    e.preventDefault()
+    const q=localStorage.getItem("r");
+    let n=document.getElementById("naam").value;
+    let jl=document.getElementById("joininglink").value;
+    let tl=document.getElementById("tagline").value;
+    let tp=document.getElementById("type").value;
+    let dc=document.getElementById("description").value;
+    const userDocRef = doc(firestore, "events", q);
+      updateDoc(userDocRef, {
+        name: n,
+        link: jl,
+        tagline: tl,
+        type: tp,
+        description: dc,
+      })
+        .then(()=>{
+          // fetch all attendees of this event and both of them to notifiaction
+          const q=localStorage.getItem("r");
+          let attendeeRef = doc(db, 'attendees', q);
+          getDoc(attendeeRef)
+            .then((x)=>{
+              const arr=x.data().attendee;
+              arr.forEach((element) => {
+                // element means user id and q means event id
+                const notificationRef = collection(db, "notification");
+                addDoc(notificationRef, {
+                  event: q,
+                  user: element,
+                })
+                .then(()=> {
+                  location.reload();
+                })
+              })
+            })
+        })
+  })
 }
 else if(isprofile) {
   onAuthStateChanged(auth, (user) => {
