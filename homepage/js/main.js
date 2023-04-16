@@ -187,3 +187,11 @@ $(document).ready(function(){
         }]
     });
   });
+
+
+//   
+$(document).ready(function() {
+    $(".notification-bell").on('click',function() {
+      $(this).find('#notification-icon').toggle();
+    });
+});

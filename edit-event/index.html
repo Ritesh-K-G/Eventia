@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <form class="event-upload-form">
+    <div class="container">
+      <h1>Update Event Details</h1>
+      <div>
+        <label for="psw-repeat">Event Name</label>
+
+        <input type="text" placeholder="Event name" id="naam" name="psw-repeat" required>
+
+        <label for="psw">Joining link</label>
+        <input type="text" placeholder="Joining Link" id="joininglink" name="psw" required>
+
+        <label for="psw">TagLine</label>
+        <input type="text" placeholder="Tagline" id="tagline" name="psw" required>
+
+        <label>Event Type : </label>
+
+        <select id="type" class="event-type">
+          <option value="Cultural">Cultural</option>
+          <option value="Technical">Technical</option>
+          <option value="Sport">Sport</option>
+        </select>
+
+        <!-- <label for="datetime">Start Date and Time:</label>
+        <input class="date" type="datetime-local" id="startTime">
+
+        <label for="datetime">End Date and Time:</label>
+        <input type="datetime-local" id="endTime" class="date-time"> -->
+
+        <!-- <label for="file">Upload event image: </label>
+        <input type="file" id="img" accept="image/*" onchange="imageSet(event)"> -->
+        
+        <!-- <div class="textarea-wrapper">
+          <label for="textarea-input">Do you want to add rules ?</label>
+          <textarea id="textarea-input" name="textarea-input" rows="4" cols="50" style="display:none;"></textarea>
+          <div class="options-wrapper">
+            <label><input type="radio" name="yes-no-option" value="yes">Yes</label>
+            <label><input type="radio" name="yes-no-option" value="no" checked>No</label>
+          </div>
+        </div> -->
+        <!-- <div class="rule-wrapper">
+          <label>Do you want to add Rules</label>
+          <div class="options-wrapper">
+            <label><input type="radio" name="yes-no-option" value="yes">Yes</label>
+            <label><input type="radio" name="yes-no-option" value="no" checked>No</label>
+          </div>
+        </div>
+        <div id="rule-fields-wrapper" style="display:none;">
+          <div class="rule">
+            <label for="rule1">Rule Description:</label>
+            <input type="text" name="rules[]" id="rule1" required>
+          </div>
+            <button type="button" class="rule-btn" id="add-rule-btn" style="display:none;">Add Rule</button>
+            <button type="button" class="rule-btn"  id="remove-rule-btn" style="display:none;" >Remove Rule</button>
+        </div> -->
+        <!-- <button id="arehogaya">submit</button> -->
+        <label for="description">Event description: </label>
+        <textarea cols="80" rows="5" id="description" placeholder="Event details" required></textarea>
+
+
+        <button type="submit" id="upd" class="registerbtn">UPDATE</button>
+  </form>
+  <script src="script.js"></script>
+  <script type="module" src="../firebase.js"></script>
+</body>
+
+</html>

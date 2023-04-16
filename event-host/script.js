@@ -3,6 +3,7 @@ const isloginpage=false;
   const isprofile=false;
   const isHost=true;
   const isRegister=false;
+  const isUpdateEvent=false;
   let eventImg;
   const textarea = document.getElementById("textarea-input");
 const yesRadio = document.querySelector('input[value="yes"]');

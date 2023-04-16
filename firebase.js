@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
 import { getAuth, getRedirectResult, signInWithRedirect, GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword ,onAuthStateChanged, createUserWithEmailAndPassword ,updateProfile} from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
-import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, arrayRemove, arrayUnion } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, arrayRemove, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 import { getStorage, ref , uploadBytes ,getDownloadURL } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -132,66 +132,161 @@ else if(ishomepage){
   onAuthStateChanged(auth, (user) => {
     //----------------- session implementation ------------------------//
     if (user) {
-      //----------------- ongoing events details printing ------------------------//
       const eventdb = collection(db, 'events');
       getDocs(eventdb)
       .then((snapshot) => {
         snapshot.docs.forEach((doc) => {
+            //----------------- ongoing events details printing ------------------------//
             var date = Date.now();
             var start = doc.data().start; 
             var end = doc.data().end;
-            // console.log(date);
-            // console.log("hii"+start.toMillis());
-            // console.log("hii"+end.toMillis());
-            // console.log(date >= start && date <= end);
             if(date >= start && date <= end) {
               const main = document.querySelector("#events-ongoing");
               const card = document.createElement('div');
               card.classList = 'swiper-slide';
               const eventCard = `
               <div class="card">
-              <div class="card_img">
-              <img src="${doc.data().photoURL}" alt="Card Image">
-              </div>
-              <div class="card-content">
-              <h2>${doc.data().name}</h2>
-              <p>${doc.data().description}</p>
-              <a class="readless" href="#">Details</a>
-              </div>
+                <div class="card_img">
+                  <img src="${doc.data().photoURL}" alt="Card Image">
+                </div>
+                <div class="card-content">
+                  <h2>${doc.data().name}</h2>
+                  <p>${doc.data().description}</p>
+                  <button type="button" id="ongoingEve" class="btn btn-primary">Details</button>
+                </div>
               </div>
               `;
               card.innerHTML += eventCard;
               main.appendChild(card);
+              const viewMoreButton = card.querySelector('#ongoingEve');
+              viewMoreButton.addEventListener('click', () => {
+                  localStorage.setItem("r",doc.id);
+                  console.log(localStorage.getItem("r"));
+                  if(auth.currentUser.uid != doc.data().host)
+                    window.location.href = "../register/index.html";
+                  else
+                  window.location.href = "../eventPageHost/index.html";
+              });
             }
               
             //----------------- upcoming events details printing ------------------------//
-            const upcomingMain = document.querySelector("#events-upcoming");
-            const upcomingCard = document.createElement('div');
-            upcomingCard.classList = 'swiper-slide';
-            const eventupcomingCard = `
-              <div class="card1">
-                <img class = "img1" src = "${doc.data().photoURL}" alt="Card Image">
-              </div>
-              <div class="card-content1">
-                <h2 class="name">${doc.data().name}</h2>
-                <p class="description">${doc.data().description}</p>
-                <button class="button">View More</button>
-              </div>
-            `;
-            upcomingCard.innerHTML += eventupcomingCard;
-            upcomingMain.appendChild(upcomingCard);
-            const viewMoreButton = upcomingCard.querySelector('.button');
-            viewMoreButton.addEventListener('click', () => {
-              localStorage.setItem("r",doc.id);
-              console.log(localStorage.getItem("r"));
-              window.location.replace("../register/");
-            });
+            else if(date < start) {
+
+              const upcomingMain = document.querySelector("#d-1");
+              const upcomingCard = document.createElement('div');
+              upcomingCard.classList = 'row schedule-item';
+              const eventupcomingCard = `
+              <div class="col-md-2"><time>${doc.data().start}</time></div>
+              <div class="col-md-10">
+                <div class="speaker">
+                  <img src="${doc.data().photoURL}" alt="Brenden Legros" />
+                </div>
+                <h4>${doc.data().name} <br><span>${doc.data().tagline}</span></h4>
+                <p>${doc.data().description}</p>
+                <br />
+                <button type="button" id="eveDetails" class="btn btn-primary">Details</button>
+                </div>
+                `;
+                upcomingCard.innerHTML += eventupcomingCard;
+                upcomingMain.appendChild(upcomingCard);
+                const viewMoreButton = upcomingCard.querySelector('#eveDetails');
+                viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",doc.id);
+                    console.log(localStorage.getItem("r"));
+                    if(auth.currentUser.uid != doc.data().host)
+                      window.location.href = "../register/index.html";
+                    else
+                    window.location.href = "../eventPageHost/index.html";
+                });
+             }
+
+             //----------------- past events details printing ------------------------//
+             else {
+              const upcomingMain = document.querySelector("#d-2");
+              const upcomingCard = document.createElement('div');
+              upcomingCard.classList = 'row schedule-item';
+              const eventupcomingCard = `
+              <div class="col-md-2"><time>${doc.data().start}</time></div>
+              <div class="col-md-10">
+                <div class="speaker">
+                  <img src="${doc.data().photoURL}" alt="Brenden Legros" />
+                </div>
+                <h4>${doc.data().name} <br><span>${doc.data().tagline}</span></h4>
+                <p>${doc.data().description}</p>
+                <br />
+                <button type="button" id="eveDetails" class="btn btn-primary">Details</button>
+                </div>
+                `;
+                upcomingCard.innerHTML += eventupcomingCard;
+                upcomingMain.appendChild(upcomingCard);
+                const viewMoreButton = upcomingCard.querySelector('#eveDetails');
+                viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",doc.id);
+                    console.log(localStorage.getItem("r"));
+                    if(auth.currentUser.uid != doc.data().host)
+                      window.location.href = "../register/index.html";
+                    else
+                    window.location.href = "../eventPageHost/index.html";
+                });
+             }
           })
         })
     }
     else{
       location.replace("../index.html");
     }
+
+    const notifydb = collection(db, 'notification');
+      getDocs(notifydb)
+      .then((snapshot) => {
+        let i=0;
+        snapshot.docs.forEach((dok) => {
+          if(dok.data().user==auth.currentUser.uid) {
+            i++;
+            const main = document.querySelector("#my_notification");
+            const card = document.createElement('li');
+            const eventRef = doc(db, 'events',dok.data().event);
+            getDoc(eventRef)
+            .then((docu) => {
+              const content = `
+              <a id="eveDetail">There has been an update in ${docu.data().name}</a>
+              `;
+              card.innerHTML += content;
+              main.appendChild(card);
+              const viewMoreButton = card.querySelector('#eveDetail');
+                viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",docu.id);
+                    console.log(localStorage.getItem("r"));
+                    const del = doc(db, "notification", dok.id);
+                    deleteDoc(del)
+                      .then(()=>{
+                        console.log("deleted");
+                        if(auth.currentUser.uid != docu.data().host)
+                          window.location.href = "../register/index.html";
+                        else
+                          window.location.href = "../eventPageHost/index.html";
+                      })
+                      .catch((e)=>{
+                        console.log(e);
+                      })
+                });
+            })
+          }
+        })
+        document.getElementById('count').innerHTML=i;
+        if(i==0) {
+          // const main = document.querySelector("#my_notification");
+          // const card = document.createElement('li');
+          // const content = `
+          //   NO NOTIFICATION
+          // `;
+          // card.innerHTML += content;
+          // main.appendChild(card);
+          const par=document.querySelector('#notification-icon');
+          par.style.display='none';
+        }
+      })
+
   });
 
   //----------------- user logout authentication ------------------------//
@@ -271,13 +366,38 @@ else if(isRegister) {
           document.getElementById("tagline").innerHTML = w.tagline;
           document.getElementById("description").innerHTML = w.description;
           document.getElementById("type").innerHTML = w.type;
-          document.getElementById("Stime").innerHTML = w.start;
-          document.getElementById("Etime").innerHTML = w.end;
           document.getElementById("EveImg").src = w.photoURL;
+          // document.getElementById("intro").style.backgroundImage = "url('" + w.photoURL + "')";
           document.getElementById("eventCardName").innerHTML = w.name;
           document.getElementById("CardTag").innerHTML = w.tagline;
           document.getElementById("CardType").innerHTML = w.type;
+          
+          let timestamp1 = w.start;
+          let date1 = new Date(timestamp1);
+          let year1 = date1.getFullYear();
+          let month1 = date1.getMonth() + 1;
+          let day1 = date1.getDate();
+          // let hours1 = date1.getHours();
+          // let minutes1 = date1.getMinutes();
+          // let seconds1 = date1.getSeconds();
+          document.getElementById('Stime').innerHTML= day1+"/"+month1+"/"+year1;
+          let timestamp2 = w.end;
+          let date2 = new Date(timestamp1);
+          let year2 = date2.getFullYear();
+          let month2 = date2.getMonth() + 1;
+          let day2 = date2.getDate();
+          // let hours2 = date2.getHours();
+          // let minutes2 = date2.getMinutes();
+          // let seconds2 = date2.getSeconds();
+          document.getElementById('Etime').innerHTML= day2+"/"+month2+"/"+year2;
 
+          var endTime= w.end;
+          if(endTime - Date.parse(new Date())>0){
+            document.querySelector(".countdown-container").style.display= "block";
+            initializeClock("countdown", endTime,function(){
+              document.querySelector(".countdown-container").style.display = "none";
+            });
+          }
 
           //----------------- Print the rules ------------------------//
           var myArray = w.rules;
@@ -353,6 +473,72 @@ else if(isRegister) {
   });
 
 }
+else if(isUpdateEvent) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const q=localStorage.getItem("r");
+      let eventRef = doc(db, 'events', q);
+      getDoc(eventRef)
+        .then((documen) => {
+          let w=documen.data();
+          //----------------- Print event details ------------------------//
+          document.getElementById("naam").value = w.name;
+          document.getElementById("joininglink").value = w.link;
+          document.getElementById("tagline").value = w.tagline;
+          // const x = w.start;
+          // const y = w.end;
+          // const sDateTime = x.toISOString().slice(0, 16);
+          // const eDateTime = y.toISOString().slice(0, 16);
+          // document.getElementById("startTime").value = w.sDateTime;
+          // document.getElementById("endTime").value = w.eDateTime;
+          document.getElementById("type").value = w.type;
+          document.getElementById("description").value = w.description;
+          // document.getElementById("EveImg").src = w.photoURL;
+        })
+    } 
+    else{
+      location.replace("../index.html");
+    }
+  });
+
+  document.querySelector('.event-upload-form').addEventListener('submit', (e)=>{
+    e.preventDefault()
+    const q=localStorage.getItem("r");
+    let n=document.getElementById("naam").value;
+    let jl=document.getElementById("joininglink").value;
+    let tl=document.getElementById("tagline").value;
+    let tp=document.getElementById("type").value;
+    let dc=document.getElementById("description").value;
+    const userDocRef = doc(firestore, "events", q);
+      updateDoc(userDocRef, {
+        name: n,
+        link: jl,
+        tagline: tl,
+        type: tp,
+        description: dc,
+      })
+        .then(()=>{
+          // fetch all attendees of this event and both of them to notifiaction
+          const q=localStorage.getItem("r");
+          let attendeeRef = doc(db, 'attendees', q);
+          getDoc(attendeeRef)
+            .then((x)=>{
+              const arr=x.data().attendee;
+              arr.forEach((element) => {
+                // element means user id and q means event id
+                const notificationRef = collection(db, "notification");
+                addDoc(notificationRef, {
+                  event: q,
+                  user: element,
+                })
+                .then(()=> {
+                  window.location.href = "../eventPageHost/index.html";
+                })
+              })
+            })
+        })
+  })
+}
 else if(isprofile) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -390,19 +576,15 @@ else if(isprofile) {
                     upcomingCard.classList = 'card2';
                     const content = `
                     <div class="card_img">
-                        <img src="https://static.wikia.nocookie.net/smurfsfanon/images/3/30/LD_Generic_Smurf_Profile.png/revision/latest/scale-to-width-down/190?cb=20200911190804"
-                            alt="">
+                        <img src="${dok.data().photoURL}" alt="event-img">
                     </div>
-
                     <div class="top-text">
-                        <div class="name">Annie lea</div>
-                        <p>Apps Developer</p>
+                        <div class="name">${dok.data().name}</div>
+                        <p>${dok.data().tagline}</p>
                     </div>
 
                     <div class="bottom-text">
-                        <div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quas quaerat
-                            sapiente ea. Illum laudantium quidem adipisci sed facere quibusdam quisquam excepturi
-                            molestias. Ut, dolor? Minima culpa officiis necessitatibus aspernatur.</div>
+                        <div class="text">${dok.data().description}</div>
                         <div class="btn">
                             <a href="#">Read more</a>
                         </div>
@@ -411,14 +593,47 @@ else if(isprofile) {
                     upcomingCard.innerHTML += content;
                     parentDiv.appendChild(upcomingCard);
                     //------------------------ Adding functionality to the button ------------------------//
-                    // const viewMoreButton = upcomingCard.querySelector('.button');
-                    // viewMoreButton.addEventListener('click', () => {
-                    //   localStorage.setItem("r",doc.id);
-                    //   console.log(localStorage.getItem("r"));
-                    //   window.location.replace("../register/");
-                    // });
+                    const viewMoreButton = upcomingCard.querySelector('.btn');
+                    viewMoreButton.addEventListener('click', () => {
+                      localStorage.setItem("r",dok.id);
+                      console.log(localStorage.getItem("r"));
+                      if(auth.currentUser.uid != dok.data().host)
+                        window.location.href = "../register/index.html";
+                      else
+                        window.location.href = "../eventPageHost/index.html";
+                    });
                   }
                 })
+                if(dok.data().host == auth.currentUser.uid) {
+                  const parentDiv = document.querySelector("#hosted");
+                  const upcomingCard = document.createElement('div');
+                  upcomingCard.classList = 'card2';
+                  const content = `
+                    <div class="card_img">
+                        <img src="${dok.data().photoURL}" alt="event-img">
+                    </div>
+                    <div class="top-text">
+                        <div class="name">${dok.data().name}</div>
+                        <p>${dok.data().tagline}</p>
+                    </div>
+
+                    <div class="bottom-text">
+                        <div class="text">${dok.data().description}</div>
+                        <div class="btn">
+                            <a href="#">Read more</a>
+                        </div>
+                    </div>
+                  `;
+                  upcomingCard.innerHTML += content;
+                  parentDiv.appendChild(upcomingCard);
+                  //------------------------ Adding functionality to the button ------------------------//
+                  const viewMoreButton = upcomingCard.querySelector('.btn');
+                  viewMoreButton.addEventListener('click', () => {
+                    localStorage.setItem("r",dok.id);
+                    console.log(localStorage.getItem("r"));
+                    window.location.href = "../eventPageHost/index.html";
+                  });
+                }
             })
           })
           .catch(()=> {
