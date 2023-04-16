@@ -282,7 +282,7 @@ else if(ishomepage){
           // `;
           // card.innerHTML += content;
           // main.appendChild(card);
-          const par=document.querySelector('#notify');
+          const par=document.querySelector('#notification-icon');
           par.style.display='none';
         }
       })
