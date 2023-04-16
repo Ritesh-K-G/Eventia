@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Card with image and content</title>
+	<style>
+		.card {
+			display: flex;
+			flex-direction: row;
+			background-color: #f0f0f0;
+			border-radius: 10px;
+			box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+			padding: 20px;
+			margin-bottom: 20px;
+            max-width: 900px;
+            height: 500px;
+            margin: 0 auto;
+		}
+
+		.card img {
+			width: 450px;
+			height: 450px;
+			object-fit: cover;
+			border-radius: 10px;
+			margin-right: 20px;
+		}
+
+		.card-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		.card-title {
+            text-align: center;
+			font-size: 24px;
+			font-weight: bold;
+			margin: 0;
+		}
+
+		.card-description {
+			font-size: 16px;
+			margin: 20px 0;
+		}
+
+		.card-button {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			cursor: pointer;
+		}
+
+		.card-button:hover {
+			background-color: #0062cc;
+		}
+	</style>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="swiper Swiper1">
+        <div class="swiper-wrapper" id="events-ongoing">
+          <div class="swiper-slide">
+
+              <div class="card">
+                  <img src="https://via.placeholder.com/200x200.png?text=Image" alt="Image">
+                  <div class="card-content">
+                      <h2 class="card-title">Card Title 1</h2>
+                      <p class="card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut gravida lacus, eu dapibus lorem. Donec efficitur orci vel ullamcorper imperdiet.</p>
+                      <button class="card-button">Read More</button>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+
+                <div class="card">
+                    <img src="https://via.placeholder.com/200x200.png?text=Image" alt="Image">
+                    <div class="card-content">
+                        <h2 class="card-title">Card Title 1</h2>
+                        <p class="card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut gravida lacus, eu dapibus lorem. Donec efficitur orci vel ullamcorper imperdiet.</p>
+                        <button class="card-button">Read More</button>
+                      </div>
+                  </div>
+              </div>
+              <div class="swiper-slide">
+
+                <div class="card">
+                    <img src="https://via.placeholder.com/200x200.png?text=Image" alt="Image">
+                    <div class="card-content">
+                        <h2 class="card-title">Card Title 1</h2>
+                        <p class="card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut gravida lacus, eu dapibus lorem. Donec efficitur orci vel ullamcorper imperdiet.</p>
+                        <button class="card-button">Read More</button>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+</body>
+</html>

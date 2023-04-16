@@ -152,12 +152,21 @@ else if(ishomepage){
                 <div class="card-content">
                   <h2>${doc.data().name}</h2>
                   <p>${doc.data().description}</p>
-                  <a class="readless" href="#">Details</a>
+                  <button type="button" id="ongoingEve" class="btn btn-primary">Details</button>
                 </div>
               </div>
               `;
               card.innerHTML += eventCard;
               main.appendChild(card);
+              const viewMoreButton = card.querySelector('#ongoingEve');
+              viewMoreButton.addEventListener('click', () => {
+                  localStorage.setItem("r",doc.id);
+                  console.log(localStorage.getItem("r"));
+                  if(auth.currentUser.uid != doc.data().host)
+                    window.location.href = "../register/index.html";
+                  else
+                  window.location.href = "../eventPageHost/index.html";
+              });
             }
               
             //----------------- upcoming events details printing ------------------------//
@@ -184,7 +193,10 @@ else if(ishomepage){
                 viewMoreButton.addEventListener('click', () => {
                     localStorage.setItem("r",doc.id);
                     console.log(localStorage.getItem("r"));
-                    window.location.href = "../register/index.html";
+                    if(auth.currentUser.uid != doc.data().host)
+                      window.location.href = "../register/index.html";
+                    else
+                    window.location.href = "../eventPageHost/index.html";
                 });
              }
 
@@ -211,7 +223,10 @@ else if(ishomepage){
                 viewMoreButton.addEventListener('click', () => {
                     localStorage.setItem("r",doc.id);
                     console.log(localStorage.getItem("r"));
-                    window.location.href = "../register/index.html";
+                    if(auth.currentUser.uid != doc.data().host)
+                      window.location.href = "../register/index.html";
+                    else
+                    window.location.href = "../eventPageHost/index.html";
                 });
              }
           })
@@ -246,7 +261,10 @@ else if(ishomepage){
                     deleteDoc(del)
                       .then(()=>{
                         console.log("deleted");
-                        window.location.href = "../register/index.html";
+                        if(auth.currentUser.uid != docu.data().host)
+                          window.location.href = "../register/index.html";
+                        else
+                          window.location.href = "../eventPageHost/index.html";
                       })
                       .catch((e)=>{
                         console.log(e);
@@ -257,13 +275,15 @@ else if(ishomepage){
         })
         document.getElementById('count').innerHTML=i;
         if(i==0) {
-          const main = document.querySelector("#my_notification");
-          const card = document.createElement('li');
-          const content = `
-            NO NOTIFICATION
-          `;
-          card.innerHTML += content;
-          main.appendChild(card);
+          // const main = document.querySelector("#my_notification");
+          // const card = document.createElement('li');
+          // const content = `
+          //   NO NOTIFICATION
+          // `;
+          // card.innerHTML += content;
+          // main.appendChild(card);
+          const par=document.querySelector('#notify');
+          par.style.display='none';
         }
       })
 
@@ -347,6 +367,7 @@ else if(isRegister) {
           document.getElementById("description").innerHTML = w.description;
           document.getElementById("type").innerHTML = w.type;
           document.getElementById("EveImg").src = w.photoURL;
+          // document.getElementById("intro").style.backgroundImage = "url('" + w.photoURL + "')";
           document.getElementById("eventCardName").innerHTML = w.name;
           document.getElementById("CardTag").innerHTML = w.tagline;
           document.getElementById("CardType").innerHTML = w.type;
@@ -511,7 +532,7 @@ else if(isUpdateEvent) {
                   user: element,
                 })
                 .then(()=> {
-                  location.reload();
+                  window.location.href = "../eventPageHost/index.html";
                 })
               })
             })
@@ -576,7 +597,10 @@ else if(isprofile) {
                     viewMoreButton.addEventListener('click', () => {
                       localStorage.setItem("r",dok.id);
                       console.log(localStorage.getItem("r"));
-                      window.location.replace("../register/");
+                      if(auth.currentUser.uid != dok.data().host)
+                        window.location.href = "../register/index.html";
+                      else
+                        window.location.href = "../eventPageHost/index.html";
                     });
                   }
                 })
@@ -607,7 +631,7 @@ else if(isprofile) {
                   viewMoreButton.addEventListener('click', () => {
                     localStorage.setItem("r",dok.id);
                     console.log(localStorage.getItem("r"));
-                    window.location.replace("../register/");
+                    window.location.href = "../eventPageHost/index.html";
                   });
                 }
             })
