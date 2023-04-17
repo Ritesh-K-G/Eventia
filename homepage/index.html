@@ -77,17 +77,11 @@
             <li id="notification-icon" class="notification-drop">
               <div class="icon" onclick="toggleNotifi()">
                 <img class="imgnotification" src="img/bell.png" alt="">
-                <span>1</span>
+                <span id="cnt"></span>
               </div>
               <div class="notifi-box" id="box">
-                <h2>Notifications <span>1</span></h2>
-                <div class="notifi-item">
-                  <img src="img/apple-touch-icon.png" alt="img">
-                  <div class="text">
-                     <h4>Elias Abdurrahman</h4>
-                     <p>@lorem ipsum dolor sit amet</p>
-                    </div> 
-                </div>
+                <h2>Notifications <span id="cnt1"></span></h2>
+                
               </div>
             </li>
           </ul>
@@ -610,13 +604,15 @@
 
     <!-- Template Main Javascript File -->
     <script>
-      const ishomepage = true;
-      const isloginpage = false;
-      const isprofile = false;
-      const isHost = false;
-      const isRegister = false;
+      const isloginpage=false;
+      const ishomepage=true;
+      const isprofile=false;
+      const isRegister=false;
+      const isHost=false;
+      const PageForHost=false;
+      const isUpdateEvent=false;
     </script>
-    <script src="js/main.js"></script>
     <script src="../firebase.js" type="module"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

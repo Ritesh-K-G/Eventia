@@ -1,11 +1,12 @@
 const isloginpage=false;
-  const ishomepage=false;
-  const isprofile=false;
-  const isHost=true;
-  const isRegister=false;
-  const isUpdateEvent=false;
-  let eventImg;
-  const textarea = document.getElementById("textarea-input");
+const ishomepage=false;
+const isprofile=false;
+const isRegister=false;
+const isHost=true;
+const PageForHost=false;
+const isUpdateEvent=false;
+let eventImg;
+const textarea = document.getElementById("textarea-input");
 const yesRadio = document.querySelector('input[value="yes"]');
 const noRadio = document.querySelector('input[value="no"]');
 

@@ -262,13 +262,18 @@ else if(ishomepage){
         snapshot.docs.forEach((dok) => {
           if(dok.data().user==auth.currentUser.uid) {
             i++;
-            const main = document.querySelector("#my_notification");
-            const card = document.createElement('li');
+            const main = document.querySelector("#box");
+            const card = document.createElement('div');
+            card.classList = 'notifi-item';
             const eventRef = doc(db, 'events',dok.data().event);
             getDoc(eventRef)
             .then((docu) => {
               const content = `
-              <a id="eveDetail">There has been an update in ${docu.data().name}</a>
+              <img src="img/apple-touch-icon.png" alt="img">
+              <div class="text"  id="eveDetail">
+                  <h4>${docu.data().name}</h4>
+                  <p>There is an update</p>
+              </div>
               `;
               card.innerHTML += content;
               main.appendChild(card);
@@ -292,17 +297,20 @@ else if(ishomepage){
             })
           }
         })
-        document.getElementById('count').innerHTML=i;
+        // document.getElementById('count').innerHTML=i;
+        document.getElementById('cnt').innerHTML=i;
+        document.getElementById('cnt1').innerHTML=i;
         if(i==0) {
-          // const main = document.querySelector("#my_notification");
-          // const card = document.createElement('li');
-          // const content = `
-          //   NO NOTIFICATION
-          // `;
-          // card.innerHTML += content;
-          // main.appendChild(card);
-          const par=document.querySelector('#notify');
-          par.style.display='none';
+          const main = document.querySelector("#box");
+          const card = document.createElement('div');
+          card.classList = 'notifi-item';
+          const content = `
+            NO NOTIFICATION
+          `;
+          card.innerHTML += content;
+          main.appendChild(card);
+          // const par=document.querySelector('#notify');
+          // par.style.display='none';
         }
       })
 
@@ -906,4 +914,52 @@ else if(isHost) {
   //   // You can now use the `rules` array to store the rules in the Firebase database
   // })
 
+}
+else if(PageForHost) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const q=localStorage.getItem("r");
+      let eventRef = doc(db, 'events', q);
+      getDoc(eventRef)
+        .then((dok) => {
+          document.getElementById("eventName").innerHTML = dok.data().name;
+          document.getElementById("eventTitle").innerHTML = dok.data().tagline;
+          document.getElementById("eventDesc").innerHTML = dok.data().description;
+          document.getElementById("start").innerHTML = dok.data().start;
+          document.getElementById("end").innerHTML = dok.data().end;
+          let attendeeRef=doc(db, 'attendees', q);
+          getDoc(attendeeRef)
+            .then((list)=> {
+              const arr=list.data().attendee;
+              arr.forEach((element) => {
+                const userRef=doc(db, 'users', element);
+                getDoc(userRef).then((d)=>{
+                  const parentDiv = document.querySelector("#list");
+                    const upcomingCard = document.createElement('div');
+                    upcomingCard.classList = 'row-schedule-item';
+                    const content = `
+                    <div class="col-md-10">
+                      <div class="speaker">
+                        <img src="${d.data().image}" alt="Profile img">
+                      </div>
+                      <h4>${d.data().name}</h4>
+                    </div>
+                    `;
+                    upcomingCard.innerHTML += content;
+                    parentDiv.appendChild(upcomingCard);
+                })
+              })
+            })
+            .catch(()=>{
+              alert("cannot get all attendees");
+            })
+        })
+        .catch(()=>{
+          alert("Cannot fetch event details");
+        })
+    } 
+    else{
+      location.replace("../index.html");
+    }
+  });
 }
