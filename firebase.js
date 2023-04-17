@@ -150,7 +150,7 @@ else if(ishomepage){
                   <img src="${doc.data().photoURL}" alt="Card Image">
                 </div>
                 <div class="card-content">
-                  <h2>${doc.data().name}</h2>
+                  <h1>${doc.data().name}</h1>
                   <p>${doc.data().description}</p>
                   <button type="button" id="ongoingEve" class="btn btn-primary">Details</button>
                 </div>
