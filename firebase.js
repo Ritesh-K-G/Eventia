@@ -171,12 +171,21 @@ else if(ishomepage){
               
             //----------------- upcoming events details printing ------------------------//
             else if(date < start) {
-
+              let timestamp = doc.data().start;
+              let date = new Date(timestamp);
+              let year = date.getFullYear();
+              let month = date.getMonth() + 1;
+              let day = date.getDate();
+              let hours = date.getHours();
+              let minutes = date.getMinutes();
+              let seconds = date.getSeconds();
+              let var1= day+"/"+month+"/"+year;
+              let var2= hours+":"+minutes+":"+seconds;
               const upcomingMain = document.querySelector("#d-1");
               const upcomingCard = document.createElement('div');
               upcomingCard.classList = 'row schedule-item';
               const eventupcomingCard = `
-              <div class="col-md-2"><time>${doc.data().start}</time></div>
+              <div class="col-md-2"><time>${var1}</time><time>${var2}</time></div>
               <div class="col-md-10">
                 <div class="speaker">
                   <img src="${doc.data().photoURL}" alt="Brenden Legros" />
@@ -202,11 +211,21 @@ else if(ishomepage){
 
              //----------------- past events details printing ------------------------//
              else {
+              let timestamp = doc.data().start;
+              let date = new Date(timestamp);
+              let year = date.getFullYear();
+              let month = date.getMonth() + 1;
+              let day = date.getDate();
+              let hours = date.getHours();
+              let minutes = date.getMinutes();
+              let seconds = date.getSeconds();
+              let var1= day+"/"+month+"/"+year;
+              let var2= hours+":"+minutes+":"+seconds;
               const upcomingMain = document.querySelector("#d-2");
               const upcomingCard = document.createElement('div');
               upcomingCard.classList = 'row schedule-item';
               const eventupcomingCard = `
-              <div class="col-md-2"><time>${doc.data().start}</time></div>
+              <div class="col-md-2"><time>${var1}</time><time>${var2}</time></div>
               <div class="col-md-10">
                 <div class="speaker">
                   <img src="${doc.data().photoURL}" alt="Brenden Legros" />
@@ -371,25 +390,25 @@ else if(isRegister) {
           document.getElementById("eventCardName").innerHTML = w.name;
           document.getElementById("CardTag").innerHTML = w.tagline;
           document.getElementById("CardType").innerHTML = w.type;
-          
+          document.getElementById('Entertheroom').href = w.link;
           let timestamp1 = w.start;
           let date1 = new Date(timestamp1);
           let year1 = date1.getFullYear();
           let month1 = date1.getMonth() + 1;
           let day1 = date1.getDate();
-          // let hours1 = date1.getHours();
-          // let minutes1 = date1.getMinutes();
-          // let seconds1 = date1.getSeconds();
-          document.getElementById('Stime').innerHTML= day1+"/"+month1+"/"+year1;
+          let hours1 = date1.getHours();
+          let minutes1 = date1.getMinutes();
+          let seconds1 = date1.getSeconds();
+          document.getElementById('Stime').innerHTML= day1+"/"+month1+"/"+year1+"  "+hours1+":"+minutes1+":"+seconds1;
           let timestamp2 = w.end;
-          let date2 = new Date(timestamp1);
+          let date2 = new Date(timestamp2);
           let year2 = date2.getFullYear();
           let month2 = date2.getMonth() + 1;
           let day2 = date2.getDate();
-          // let hours2 = date2.getHours();
-          // let minutes2 = date2.getMinutes();
-          // let seconds2 = date2.getSeconds();
-          document.getElementById('Etime').innerHTML= day2+"/"+month2+"/"+year2;
+          let hours2 = date2.getHours();
+          let minutes2 = date2.getMinutes();
+          let seconds2 = date2.getSeconds();
+          document.getElementById('Etime').innerHTML= day2+"/"+month2+"/"+year2+"  "+hours2+":"+minutes2+":"+seconds2;
 
           var endTime= w.end;
           if(endTime - Date.parse(new Date())>0){
@@ -783,6 +802,7 @@ else if(isHost) {
 
     const naam = document.getElementById('naam').value;
     const host = auth.currentUser.uid;
+    const tagline= document.getElementById('TagLine').value;
     const link = document.getElementById('joininglink').value;
     const description = document.getElementById('description').value;
     const startTime = document.getElementById('startTime').value;
@@ -792,7 +812,7 @@ else if(isHost) {
     for (let i = 0; i < rulesInputs.length; i++) {
       rules.push(rulesInputs[i].value);
     }
-    if(naam=="" || description=="" || !startTime || !endTime || link=="") {
+    if(naam=="" || description=="" || !startTime || !endTime || link=="" || tagline=="") {
       alert("Enter All Fields");
     }
     else{ 
@@ -809,6 +829,7 @@ else if(isHost) {
       const eventDataRef = collection(db, "events");
       addDoc(eventDataRef, {
         name: naam,
+        tagline: tagline,
         host: host,
         link: link,
         description: description,
