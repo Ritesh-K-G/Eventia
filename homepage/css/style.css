@@ -1764,7 +1764,7 @@ h2 {
 /* ////// */
 
 
-/* 
+
 #notify {
     list-style: none;
     margin: 0;
@@ -1848,45 +1848,4 @@ h2 {
   
   .notification-drop:hover ul {
     display: block;
-  } */
-
-  .notification-drop {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .notification-bell {
-    color: #fff;
-    font-size: 24px;
-    margin-top: 5px;
-  }
-  
-  .btn__badge {
-    position:relative;
-    top:-20px;
-    left:-10px;
-    font-size: 10px;
-    background-color: red;
-    color: white;
-    padding: 0 5px;
-    border-radius: 50%;
-  }
-  
-  .pulse-button {
-    animation: pulse 1s infinite;
-  }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    
-    50% {
-      transform: scale(1.2);
-    }
-    
-    100% {
-      transform: scale(1);
-    }
   }

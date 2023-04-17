@@ -191,7 +191,7 @@ $(document).ready(function(){
 
 //   
 $(document).ready(function() {
-    $(".notification-bell").on('click',function() {
-      $(this).find('#notification-icon').toggle();
+    $(".notification-drop .item").on('click',function() {
+      $(this).find('#notify').toggle();
     });
 });
