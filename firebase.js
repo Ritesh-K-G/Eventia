@@ -381,6 +381,7 @@ else if(ishomepage){
 
 }
 else if(isRegister) {
+  let isAttending=0;
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const q=localStorage.getItem("r");
@@ -447,6 +448,33 @@ else if(isRegister) {
             getDoc(eventAttendeesRef)
             .then((dok) => {
               if(dok.data().attendee.includes(userID)) {
+                if(endTime - Date.parse(new Date())>0){
+                  document.getElementById("subscribe").style.display = 'none';
+                }
+                else {
+                  document.getElementById("subscribe").style.display = 'block';
+                  document.querySelector("#feedbacksubmit").addEventListener('submit', (e)=> {
+                    e.preventDefault()
+                    const feedref=collection(db, "feedback");
+                    const user_feedback=document.getElementById("feedback").value;
+                    if(user_feedback!="") {
+                      const userid=auth.currentUser.uid;
+                      const userRef = doc(db, 'users',userid);
+                      getDoc(userRef).then((doc) => {
+                        const user_img=doc.data().image;
+                        const user_name=doc.data().name;
+                        addDoc(feedref, {
+                          eventId: q,
+                          img: user_img,
+                          user: user_name,
+                          feedback: user_feedback,
+                        })
+                      }).then(()=>{
+                          alert("feedback sent");
+                        })
+                    }
+                  });
+                }
                 document.getElementById('msg').style.display = 'block';
                 document.getElementById('register').style.display = 'none';
                 document.getElementById('btn1').style.display = 'none';
@@ -481,6 +509,12 @@ else if(isRegister) {
                     console.log("Cannot be registered");
                   })
                 })
+              }
+              if(endTime - Date.parse(new Date())<=0){
+                document.getElementById('msg').style.display = 'none';
+                document.getElementById('register').style.display = 'none';
+                document.getElementById('btn1').style.display = 'none';
+                document.getElementById('btn2').style.display = 'none';
               }
             })
             .catch(()=> {
@@ -943,6 +977,7 @@ else if(PageForHost) {
                         <img src="${d.data().image}" alt="Profile img">
                       </div>
                       <h4>${d.data().name}</h4>
+                      <hr>
                     </div>
                     `;
                     upcomingCard.innerHTML += content;
@@ -957,6 +992,29 @@ else if(PageForHost) {
         .catch(()=>{
           alert("Cannot fetch event details");
         })
+
+      let feedref=collection(db, "feedback");
+      getDocs(feedref).then((snapshot)=>{
+        snapshot.docs.forEach((feeds) => {
+          if(feeds.data().eventId == q) {
+              const main = document.querySelector("#feedlist");
+              const card = document.createElement('div');
+              card.classList = 'row-schedule-item';
+              const feedCard = `
+              <div class="col-md-10">
+                <div class="speaker">
+                  <img src="${feeds.data().img}" alt="Profile img">
+                </div>
+                <h4>${feeds.data().user}</h4>
+                <p>${feeds.data().feedback}</p>
+                <hr>
+              </div>
+              `;
+              card.innerHTML += feedCard;
+              main.appendChild(card);
+          }
+        })
+      })
     } 
     else{
       location.replace("../index.html");
