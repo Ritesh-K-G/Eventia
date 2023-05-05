@@ -503,7 +503,19 @@ else if(isRegister) {
                   })
                   .then(()=>{
                     console.log("Successfully registered");
-                    location.reload();
+                    Email.send({
+                      SecureToken : "84cd10c4-79b3-4e2a-b7ab-1512b156f7c2",
+                      To : 'ritesh.kumargupta.7549@gmail.com',
+                      From : "ritesh.kg.7549@gmail.com",
+                      Subject : "Email from eventia",
+                      Body : "You have successfully registered for the event"
+                    }).then(
+                      (message) => {
+                        if(alert(message)){}
+                        else   
+                          window.location.reload(); 
+                      }
+                    );
                   })
                   .catch(()=> {
                     console.log("Cannot be registered");

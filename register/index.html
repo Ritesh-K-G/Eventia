@@ -357,7 +357,7 @@
           <div id="register">
             <img src="https://media.tenor.com/tKe_PFkn6mMAAAAC/clickhere-click.gif" alt="Card Image" style="max-height: 250px; max-width: 250px; justify-content: center;">
             <br>Click! to register for the event<br>
-            <button id="regBTN" class="btn btn-outline-success">Register</button>
+            <button id="regBTN" class="btn btn-outline-success" onclick="send()">Register</button>
             <hr>
           </div>
           <div id="msg">
@@ -482,6 +482,13 @@
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
   <script type="module" src="../firebase.js"></script>
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script>
+    function send() {
+      
+
+    }
+  </script>
   <script>
     const isloginpage=false;
     const ishomepage=false;
