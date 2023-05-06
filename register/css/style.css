@@ -1464,6 +1464,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
+
 #footer .logo h1 {
   font-size: 36px;
   margin: 0;
@@ -1492,6 +1493,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #footer .footer-top .footer-info {
+  margin-right: 150px;
   margin-bottom: 30px;
 }
 
@@ -1549,6 +1551,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #footer .footer-top .footer-links {
+  margin-right: 120px;
   margin-bottom: 30px;
 }
 
@@ -1624,7 +1627,6 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-size: 13px;
   color: #ddd;
 }
-
 /*--------------------------------------------------------------
 # Responsive Media Queries
 --------------------------------------------------------------*/
