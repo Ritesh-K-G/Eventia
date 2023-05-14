@@ -269,7 +269,7 @@ else if(ishomepage){
             getDoc(eventRef)
             .then((docu) => {
               const content = `
-              <img src="img/apple-touch-icon.png" alt="img">
+              <img src="${docu.data().photoURL}" alt="img">
               <div class="text"  id="eveDetail">
                   <h4>${docu.data().name}</h4>
                   <p>There is an update</p>
@@ -441,7 +441,7 @@ else if(isRegister) {
             // li.appendChild(icon)
             ruleDiv.appendChild(li);
           });
-
+          document.getElementById("subscribe").style.display = 'none';
           //----------------- Cancel and register for event ------------------------//
             var eventAttendeesRef=doc(db,'attendees',q);
             var userID=auth.currentUser.uid;
@@ -452,6 +452,7 @@ else if(isRegister) {
                   document.getElementById("subscribe").style.display = 'none';
                 }
                 else {
+                  document.getElementById("Entertheroom").style.display = 'block';
                   document.getElementById("subscribe").style.display = 'block';
                   document.querySelector("#feedbacksubmit").addEventListener('submit', (e)=> {
                     e.preventDefault()
@@ -511,7 +512,7 @@ else if(isRegister) {
                       Body : "You have successfully registered for the event"
                     }).then(
                       (message) => {
-                        if(alert(message)){}
+                        if(alert("You have successfully registered for the event")){}
                         else   
                           window.location.reload(); 
                       }
