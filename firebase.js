@@ -498,25 +498,32 @@ else if(isRegister) {
                 document.getElementById('register').style.display = 'block';
                 document.getElementById('btn1').style.display = 'block';
                 document.getElementById('btn2').style.display = 'none';
+                var user_email1;
                 document.getElementById("regBTN").addEventListener('click', () => {
                   updateDoc(eventAttendeesRef, {
                     attendee: arrayUnion(userID)
                   })
                   .then(()=>{
                     console.log("Successfully registered");
-                    Email.send({
-                      SecureToken : "84cd10c4-79b3-4e2a-b7ab-1512b156f7c2",
-                      To : 'ritesh.kumargupta.7549@gmail.com',
-                      From : "ritesh.kg.7549@gmail.com",
-                      Subject : "Email from eventia",
-                      Body : "You have successfully registered for the event"
-                    }).then(
-                      (message) => {
-                        if(alert("You have successfully registered for the event")){}
-                        else   
+                    const userid=auth.currentUser.uid;
+                    const userRef = doc(db, 'users',userid);
+                    getDoc(userRef).then((doke) => {
+                      user_email1=doke.data().email;
+                      var Body = "You have successfully registered for the event " + w.name;
+                      Email.send({
+                        SecureToken : "84cd10c4-79b3-4e2a-b7ab-1512b156f7c2",
+                        To : user_email1,
+                        From : "ritesh.kg.7549@gmail.com",
+                        Subject : "Email from Eventia",
+                        Body : Body
+                      }).then(
+                        (message) => {
+                          if(alert("Registered successfully")){}
+                          else   
                           window.location.reload(); 
-                      }
-                    );
+                        }
+                        );
+                      });
                   })
                   .catch(()=> {
                     console.log("Cannot be registered");
