@@ -269,7 +269,7 @@ else if(ishomepage){
             getDoc(eventRef)
             .then((docu) => {
               const content = `
-              <img src="img/apple-touch-icon.png" alt="img">
+              <img src="${docu.data().photoURL}" alt="img">
               <div class="text"  id="eveDetail">
                   <h4>${docu.data().name}</h4>
                   <p>There is an update</p>
@@ -441,7 +441,7 @@ else if(isRegister) {
             // li.appendChild(icon)
             ruleDiv.appendChild(li);
           });
-
+          document.getElementById("subscribe").style.display = 'none';
           //----------------- Cancel and register for event ------------------------//
             var eventAttendeesRef=doc(db,'attendees',q);
             var userID=auth.currentUser.uid;
@@ -452,6 +452,7 @@ else if(isRegister) {
                   document.getElementById("subscribe").style.display = 'none';
                 }
                 else {
+                  document.getElementById("Entertheroom").style.display = 'block';
                   document.getElementById("subscribe").style.display = 'block';
                   document.querySelector("#feedbacksubmit").addEventListener('submit', (e)=> {
                     e.preventDefault()
@@ -497,13 +498,32 @@ else if(isRegister) {
                 document.getElementById('register').style.display = 'block';
                 document.getElementById('btn1').style.display = 'block';
                 document.getElementById('btn2').style.display = 'none';
+                var user_email1;
                 document.getElementById("regBTN").addEventListener('click', () => {
                   updateDoc(eventAttendeesRef, {
                     attendee: arrayUnion(userID)
                   })
                   .then(()=>{
                     console.log("Successfully registered");
-                    location.reload();
+                    const userid=auth.currentUser.uid;
+                    const userRef = doc(db, 'users',userid);
+                    getDoc(userRef).then((doke) => {
+                      user_email1=doke.data().email;
+                      var Body = "You have successfully registered for the event " + w.name;
+                      Email.send({
+                        SecureToken : "84cd10c4-79b3-4e2a-b7ab-1512b156f7c2",
+                        To : user_email1,
+                        From : "ritesh.kg.7549@gmail.com",
+                        Subject : "Email from Eventia",
+                        Body : Body
+                      }).then(
+                        (message) => {
+                          if(alert("Registered successfully")){}
+                          else   
+                          window.location.reload(); 
+                        }
+                        );
+                      });
                   })
                   .catch(()=> {
                     console.log("Cannot be registered");
