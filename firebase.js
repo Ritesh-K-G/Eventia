@@ -509,6 +509,7 @@ else if(isRegister) {
                     console.log("Cannot be registered");
                   })
                 })
+                document.getElementById('subscribe').style.display= 'none';
               }
               if(endTime - Date.parse(new Date())<=0){
                 document.getElementById('msg').style.display = 'none';
@@ -959,8 +960,26 @@ else if(PageForHost) {
           document.getElementById("eventName").innerHTML = dok.data().name;
           document.getElementById("eventTitle").innerHTML = dok.data().tagline;
           document.getElementById("eventDesc").innerHTML = dok.data().description;
-          document.getElementById("start").innerHTML = dok.data().start;
-          document.getElementById("end").innerHTML = dok.data().end;
+          
+          let timestamp1 = dok.data().start;
+          let date1 = new Date(timestamp1);
+          let year1 = date1.getFullYear();
+          let month1 = date1.getMonth() + 1;
+          let day1 = date1.getDate();
+          let hours1 = date1.getHours();
+          let minutes1 = date1.getMinutes();
+          let seconds1 = date1.getSeconds();
+          document.getElementById("start").innerHTML = day1+"/"+month1+"/"+year1+"  "+hours1+":"+minutes1+":"+seconds1;
+          let timestamp2 = dok.data().end;
+          let date2 = new Date(timestamp2);
+          let year2 = date2.getFullYear();
+          let month2 = date2.getMonth() + 1;
+          let day2 = date2.getDate();
+          let hours2 = date2.getHours();
+          let minutes2 = date2.getMinutes();
+          let seconds2 = date2.getSeconds();
+          document.getElementById("end").innerHTML = day2+"/"+month2+"/"+year2+"  "+hours2+":"+minutes2+":"+seconds2;
+
           let attendeeRef=doc(db, 'attendees', q);
           getDoc(attendeeRef)
             .then((list)=> {
