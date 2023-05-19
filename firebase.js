@@ -255,6 +255,22 @@ else if(ishomepage){
       location.replace("../index.html");
     }
 
+    document.querySelector('.feedback_web').addEventListener('submit', (e)=>{
+      e.preventDefault()
+      
+      let n=document.getElementById("email_feed").value;
+      let dc=document.getElementById("msg_feed").value;
+      const feedbackWeb = collection(db, "feedback_web");
+        addDoc(feedbackWeb, {
+          email: n,
+          feedback: dc,
+        })
+          .then(()=>{
+            alert("feedback sent!!");
+            window.location.href=".";
+          })
+    })
+
     const notifydb = collection(db, 'notification');
       getDocs(notifydb)
       .then((snapshot) => {
