@@ -657,15 +657,16 @@ else if(isprofile) {
                     const upcomingCard = document.createElement('div');
                     upcomingCard.classList = 'card2';
                     const content = `
+                    <div class="join_class">
                     <div class="card_img">
                         <img src="${dok.data().photoURL}" alt="event-img">
                     </div>
                     <div class="top-text">
                         <div class="name">${dok.data().name}</div>
-                        <p>${dok.data().tagline}</p>
                     </div>
-
+                    </div>
                     <div class="bottom-text">
+                        <p>${dok.data().tagline}</p>
                         <div class="text">${dok.data().description}</div>
                         <div class="btn">
                             <a href="#">Read more</a>
@@ -691,15 +692,16 @@ else if(isprofile) {
                   const upcomingCard = document.createElement('div');
                   upcomingCard.classList = 'card2';
                   const content = `
+                  <div class = "join_class2">
                     <div class="card_img">
                         <img src="${dok.data().photoURL}" alt="event-img">
                     </div>
                     <div class="top-text">
                         <div class="name">${dok.data().name}</div>
-                        <p>${dok.data().tagline}</p>
                     </div>
-
+                  </div>
                     <div class="bottom-text">
+                        <p>${dok.data().tagline}</p>
                         <div class="text">${dok.data().description}</div>
                         <div class="btn">
                             <a href="#">Read more</a>
