@@ -1,6 +1,6 @@
-# Event Management Website
+# Eventia
 
-The Event Management Website is a platform that allows users to create, manage, and participate in various events. Users can create events, view past, active, and upcoming events, and register for events they are interested in.
+The Eventia (Event Management Website) is a platform that allows users to create, manage, and participate in various events. Users can create events, view past, active, and upcoming events, and register for events they are interested in.
 
 ## Features
 
