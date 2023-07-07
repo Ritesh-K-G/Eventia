@@ -25,7 +25,7 @@ To run the Event Management Website locally, follow these steps:
 2. Make sure you have Node.Js installed.
 3. You can run the project by opening the index file on localhost.
 
-- Alternatively, you can access the live version of Artrise at https://eventsia.netlify.app/
+- Alternatively, you can access the live version of Eventia at https://eventsia.netlify.app/
   
 ## Contributing
 
